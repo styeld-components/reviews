@@ -1,0 +1,21 @@
+{
+  "name": "hrsf128-FEC",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon server/index.js",
+    "db:setup": "node database/seed.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "mongo": "^0.1.0",
+    "mongoose": "^5.9.19",
+    "nodemon": "^2.0.4",
+    "path": "^0.12.7"
+  }
+}
