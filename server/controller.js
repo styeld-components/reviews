@@ -25,7 +25,8 @@ const reviewScores = function (req, res) {
         total_accuracy: { $avg: '$scores.accuracy' },
         total_location: { $avg: '$scores.location' },
         total_value: { $avg: '$scores.value' },
-        total_amenities: { $avg: '$scores.amenities' }
+        total_amenities: { $avg: '$scores.amenities' },
+        total_reviews: {$sum: 1}
       }
     }
   ])
@@ -52,12 +53,13 @@ const reviewOverall = function (req, res) {
         total_accuracy: { $avg: '$scores.accuracy' },
         total_location: { $avg: '$scores.location' },
         total_value: { $avg: '$scores.value' },
-        total_amenities: { $avg: '$scores.amenities' }
+        total_amenities: { $avg: '$scores.amenities' },
+        total_reviews: {$sum: 1}
       }
     },
     {
       $project: {
-        _id: '$roomId',
+        total_reviews: '$total_reviews',
         total_score: {
           $avg: [
             '$total_cleanliness',
@@ -75,7 +77,6 @@ const reviewOverall = function (req, res) {
     .exec((err, data) => {
       if (err) res.sendStatus(400);
       res.send(data);
-      console.log(room);
     });
 };
 
