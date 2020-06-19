@@ -1,38 +1,36 @@
 const faker = require('faker');
 const db = require('./index.js');
-const Reviews = require('./reviews.js');
+const Review = require('./reviews.js');
 
-const sampleReviews = [
-  {
-    _roomId: Number,
-    total_cleanliness: { $avg: '$reviews.scores.cleanliness' },
-    total_communication: { $avg: '$reviews.scores.communication' },
-    total_check_in: { $avg: '$reviews.scores.check_in' },
-    total_accuracy: { $avg: '$reviews.scores.accuracy' },
-    total_location: { $avg: '$reviews.scores.location' },
-    total_value: { $avg: '$reviews.scores.value' },
-    reviews: [
-      {
-        user_name: faker.name.findName,
-        user_image: faker.image.avatar,
-        user_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-        date: faker.date.past,
-        text: faker.hacker.phrase,
-        scores: {
-          cleanliness: faker.random.number({'min': 1, 'max': 10}),
-          communication: faker.random.number({'min': 1, 'max': 10}),
-          check_in: faker.random.number({'min': 1, 'max': 10}),
-          accuracy: faker.random.number({'min': 1, 'max': 10}),
-          location: faker.random.number({'min': 1, 'max': 10}),
-          value: faker.random.number({'min': 1, 'max': 10})
-        }
+const createSampleReviews = function() {
+  let reviews = [];
+
+  for (let i = 0; i < 10; i++) { // EDIT NUMBER OF ENTRIES HERE
+    reviews.push({
+      _roomId: 10, // faker.random.number({ 'min': 1, 'max': 100 }),
+      user_name: faker.name.findName(),
+      user_image: faker.image.avatar(),
+      user_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+      date: faker.date.between('2017-01-01', '2020-06-15'),
+      text: faker.hacker.phrase(),
+      scores: {
+        cleanliness: faker.random.number({ 'min': 1, 'max': 10 }),
+        communication: faker.random.number({ 'min': 1, 'max': 10 }),
+        check_in: faker.random.number({ 'min': 1, 'max': 10 }),
+        accuracy: faker.random.number({ 'min': 1, 'max': 10 }),
+        location: faker.random.number({ 'min': 1, 'max': 10 }),
+        value: faker.random.number({ 'min': 1, 'max': 10 }),
+        amenities: faker.random.number({ 'min': 1, 'max': 10 })
       }
-    ]
+    });
   }
-];
+  return reviews;
+};
+
+const seedData = createSampleReviews();
 
 const insertSampleReviews = function () {
-  Reviews.create(sampleReviews)
+  Review.create(seedData)
     .then(() => db.disconnect());
 };
 

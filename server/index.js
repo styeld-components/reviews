@@ -1,19 +1,16 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
-const Reviews = require('../database/reviews.js');
+const controller = require('./controller.js');
 
 const app = express();
 const port = 3002;
 
-app.use('/static', express.static(path.join(__dirname, '../public')));
+app.use('/static', express.static(path.join(__dirname, '../client/dist')));
 app.use(bodyParser.json());
 
-app.get('/api/:productId/reviews', (req, res) => {
-  Reviews.find({}).sort({ date: -1 }).exec((err, data) => {
-    if (err) res.sendStatus(400);
-    res.send(data);
-  });
-});
+app.get('/api/:roomId/reviews', controller.reviews);
+app.get('/api/:roomId/reviews/scores', controller.reviewScores);
+app.get('/api/:roomId/reviews/overall', controller.reviewOverall);
 
 app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`));
