@@ -13,4 +13,4 @@ app.get('/api/:roomId/reviews', controller.reviews);
 app.get('/api/:roomId/reviews/scores', controller.reviewScores);
 app.get('/api/:roomId/reviews/overall', controller.reviewOverall);
 
-app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`));
+app.listen(port, () => console.log(`Listening at http://localhost:${port}`));

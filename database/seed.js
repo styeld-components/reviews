@@ -5,9 +5,9 @@ const Review = require('./reviews.js');
 const createSampleReviews = function() {
   let reviews = [];
 
-  for (let i = 0; i < 10; i++) { // EDIT NUMBER OF ENTRIES HERE
+  for (let i = 0; i < 10000; i++) { // EDIT NUMBER OF ENTRIES HERE
     reviews.push({
-      _roomId: 10, // faker.random.number({ 'min': 1, 'max': 100 }),
+      _roomId: faker.random.number({ 'min': 1, 'max': 100 }),
       user_name: faker.name.findName(),
       user_image: faker.image.avatar(),
       user_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
