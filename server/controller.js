@@ -1,5 +1,6 @@
 const Review = require('../database/reviews.js');
 
+// GET ALL REVIEW DATA
 const reviews = function (req, res) {
   const room = req.params.roomId;
   Review.find({ _roomId: room }).sort({ date: -1 }).exec((err, data) => {
@@ -8,12 +9,13 @@ const reviews = function (req, res) {
   });
 };
 
+// COMBINE REVIEW SCORES BASED ON ROOM ID
 const reviewScores = function (req, res) {
   const room = req.params.roomId;
-  Review.aggregate([
+  const query = [
     {
       $match: {
-        $expr: {_roomId: room }
+        _roomId: Number(room)
       }
     },
     {
@@ -25,23 +27,25 @@ const reviewScores = function (req, res) {
         total_accuracy: { $avg: '$scores.accuracy' },
         total_location: { $avg: '$scores.location' },
         total_value: { $avg: '$scores.value' },
-        total_amenities: { $avg: '$scores.amenities' },
-        total_reviews: {$sum: 1}
+        total_reviews: { $sum: 1 }
       }
     }
-  ])
+  ];
+
+  Review.aggregate(query)
     .exec((err, data) => {
       if (err) res.sendStatus(400);
       res.send(data);
     });
 };
 
+// GET OVERALL RATING BASED ON AGGREGATE ROOM SCORES
 const reviewOverall = function (req, res) {
   const room = req.params.roomId;
-  Review.aggregate([
+  const query = [
     {
       $match: {
-        $expr: {_roomId: room }
+        _roomId: Number(room)
       }
     },
     {
@@ -53,8 +57,7 @@ const reviewOverall = function (req, res) {
         total_accuracy: { $avg: '$scores.accuracy' },
         total_location: { $avg: '$scores.location' },
         total_value: { $avg: '$scores.value' },
-        total_amenities: { $avg: '$scores.amenities' },
-        total_reviews: {$sum: 1}
+        total_reviews: { $sum: 1 }
       }
     },
     {
@@ -67,13 +70,14 @@ const reviewOverall = function (req, res) {
             'total_check_in',
             'total_accuracy',
             'total_location',
-            'total_value',
-            'total_amenities'
+            'total_value'
           ]
         }
       }
     }
-  ])
+  ];
+
+  Review.aggregate(query)
     .exec((err, data) => {
       if (err) res.sendStatus(400);
       res.send(data);
