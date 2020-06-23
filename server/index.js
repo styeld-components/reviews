@@ -6,7 +6,7 @@ const controller = require('./controller.js');
 const app = express();
 const port = 3002;
 
-app.use('/static', express.static(path.join(__dirname, '../client/dist')));
+app.use('/', express.static(path.join(__dirname, '../client/dist')));
 app.use(bodyParser.json());
 
 app.get('/api/:roomId/reviews', controller.reviews);

@@ -15,8 +15,7 @@ const reviewSchema = new mongoose.Schema({
     check_in: Number,
     accuracy: Number,
     location: Number,
-    value: Number,
-    amenities: Number
+    value: Number
   }
 });
 
