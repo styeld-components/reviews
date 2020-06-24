@@ -22,9 +22,10 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.getReviews(10);
-    this.getReviewScores(10);
-    this.getReviewOverall(10);
+    const testNumber = Math.floor(Math.random() * 100 + 1);
+    this.getReviews(testNumber);
+    this.getReviewScores(testNumber);
+    this.getReviewOverall(testNumber);
   }
 
   // HTTP REQUESTS
@@ -48,12 +49,12 @@ class App extends React.Component {
       contentType: 'application/json',
       success: data => {
         this.setState({
-          cleanliness: Number(data[0].total_cleanliness.toFixed(1)),
-          accuracy: Number(data[0].total_accuracy.toFixed(1)),
-          communication: Number(data[0].total_communication.toFixed(1)),
-          location: Number(data[0].total_location.toFixed(1)),
-          checkIn: Number(data[0].total_check_in.toFixed(1)),
-          value: Number(data[0].total_value.toFixed(1))
+          cleanliness: data[0].total_cleanliness.toFixed(1),
+          accuracy: data[0].total_accuracy.toFixed(1),
+          communication: data[0].total_communication.toFixed(1),
+          location: data[0].total_location.toFixed(1),
+          checkIn: data[0].total_check_in.toFixed(1),
+          value: data[0].total_value.toFixed(1)
         });
       }
     });
@@ -67,7 +68,7 @@ class App extends React.Component {
       contentType: 'application/json',
       success: data => {
         this.setState({
-          overall: Number((data[0].total_score / 2).toFixed(2)),
+          overall: Number((data[0].total_score).toFixed(2)),
           totalReviews: data[0].total_reviews
         });
       }
@@ -77,17 +78,17 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <h3>
-          {this.state.overall} <span>({this.state.totalReviews} reviews)</span>
+        <h3 id="overview">
+          <span id="star">★</span>{this.state.overall} <span>({this.state.totalReviews} reviews)</span>
         </h3>
-        <div>
+        <table id="scoresTable">
           <Scores cleanliness={this.state.cleanliness} accuracy={this.state.accuracy} communication={this.state.communication} location={this.state.location} checkIn={this.state.checkIn} value={this.state.value} />
-        </div>
-        <div>
+        </table>
+        <table>
           <Reviews reviews={this.state.reviews} totalReviews={this.state.totalReviews} />
-        </div>
+        </table>
         <div>
-          <button>Show all {this.state.totalReviews} reviews</button>
+          <button id="reviewsButton">Show all {this.state.totalReviews} reviews</button>
         </div>
       </div>
     );
