@@ -2,14 +2,23 @@ import React from 'react';
 import ReviewsEntry from './ReviewsEntry.jsx';
 
 const Reviews = (props) => (
-  <div>
-    <h1>jest sucks</h1>
-    <div>
-      {props.reviews.slice(0, 6).map(review => (
+  <tbody>
+    <tr>
+      {props.reviews.slice(0, 2).map(review => (
         <ReviewsEntry review={review} key={review._id} />
       ))}
-    </div>
-  </div>
-)
+    </tr>
+    <tr>
+      {props.reviews.slice(2, 4).map(review => (
+        <ReviewsEntry review={review} key={review._id} />
+      ))}
+    </tr>
+    <tr>
+      {props.reviews.slice(4, 6).map(review => (
+        <ReviewsEntry review={review} key={review._id} />
+      ))}
+    </tr>
+  </tbody>
+);
 
 export default Reviews;

@@ -5,10 +5,6 @@ class ReviewsEntry extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      value: null
-    };
-
     this.handleClick = this.handleClick.bind(this);
   }
 
@@ -18,20 +14,20 @@ class ReviewsEntry extends React.Component {
 
   render() {
     return (
-      <div>
+      <td className="reviewCell">
         <div>
-          <img src={this.props.review.user_image} onClick={this.handleClick}></img>
+          <img className="userImage" src={this.props.review.user_image} onClick={this.handleClick}></img>
         </div>
-        <div>
+        <div className="reviewUser">
           {this.props.review.user_name}
         </div>
-        <div>
+        <div className="reviewDate">
           {moment(this.props.review.date).format('MMMM YYYY')}
         </div>
-        <div>
+        <div className="reviewText">
           {this.props.review.text}
         </div>
-      </div>
+      </td>
     );
   }
 }

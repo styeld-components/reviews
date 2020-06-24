@@ -20,6 +20,8 @@ module.exports = {
     ],
     "rules": {
         "comma-dangle": 0,
+        "func-names": 0,
+        "import/extensions": 0,
         "no-console": 0,
         "no-plusplus": 0,
         "no-unused-vars": 0
