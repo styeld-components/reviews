@@ -68,12 +68,13 @@ class App extends React.Component {
       contentType: 'application/json',
       success: data => {
         this.setState({
-          overall: Number((data[0].total_score).toFixed(2)),
+          overall: (data[0].total_score).toFixed(2),
           totalReviews: data[0].total_reviews
         });
       }
     });
   }
+  // END OF HTTP REQUESTS
 
   render() {
     return (
@@ -82,7 +83,14 @@ class App extends React.Component {
           <span id="star">★</span>{this.state.overall} <span>({this.state.totalReviews} reviews)</span>
         </h3>
         <table id="scoresTable">
-          <Scores cleanliness={this.state.cleanliness} accuracy={this.state.accuracy} communication={this.state.communication} location={this.state.location} checkIn={this.state.checkIn} value={this.state.value} />
+          <Scores
+          cleanliness={this.state.cleanliness}
+          accuracy={this.state.accuracy}
+          communication={this.state.communication}
+          location={this.state.location}
+          checkIn={this.state.checkIn}
+          value={this.state.value}
+          />
         </table>
         <table>
           <Reviews reviews={this.state.reviews} totalReviews={this.state.totalReviews} />

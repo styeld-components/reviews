@@ -5,10 +5,6 @@ class ReviewsEntry extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      value: null
-    };
-
     this.handleClick = this.handleClick.bind(this);
   }
 
