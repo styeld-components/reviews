@@ -6,18 +6,22 @@ module.exports = {
   entry: `${SRC_DIR}/index.jsx`,
   output: {
     filename: 'bundle.js',
-    path: DIST_DIR
+    path: DIST_DIR,
   },
-  module : {
-    loaders : [
+  module: {
+    loaders: [
       {
-        test : /\.jsx?/,
-        include : SRC_DIR,
-        loader : 'babel-loader',
+        test: /\.jsx?/,
+        include: SRC_DIR,
+        loader: 'babel-loader',
         query: {
-          presets: ['react', 'env']
-        }
-      }
-    ]
-  }
-}
+          presets: ['@babel/preset-env', '@babel/preset-react'],
+        },
+      },
+      {
+        test: /\.css$/,
+        loader: 'style-loader!css-loader',
+      },
+    ],
+  },
+};
