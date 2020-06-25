@@ -141,7 +141,7 @@ p {
   padding-right: 26px;
   padding-left: 26px;
   margin-top: 52px;
-  margin-bottom: 26px;
+  margin-bottom: 28px;
   margin-left: 2px;
   margin-right: 2px;
 }
@@ -156,6 +156,12 @@ p {
   margin-right: auto;
   border: 1px solid black;
   border-radius: 50;
+}
+
+#modalHeader {
+  position: fixed;
+  margin-top: 4px;
+  background-color: white;
 }
 
 #modalButton {
@@ -185,6 +191,7 @@ p {
   float: left;
   padding-top: 12px;
   margin-top: 64px;
+  position: fixed;
 }
 
 #modalStar {
@@ -203,8 +210,9 @@ p {
   font-size: 18px;
   font-weight: 300;
   padding-left: 12px;
-  margin-top: 28px;
+  margin-top: 168px;
   display: inline-block;
+  position: fixed;
 }
 
 .modalScore {
@@ -244,10 +252,4 @@ p {
   width: 770px;
   padding-top: 12px;
   margin-top: 56px;
-}
-
-#modalHeader {
-  position: fixed;
-  margin-top: 4px;
-  background-color: white;
 }

@@ -15,14 +15,17 @@ class ModalReviews extends React.Component {
   render() {
     return (
       <div>
+        {/* CLOSE MODAL BUTTON */}
         <header id="modalHeader">
           <div>
-          <button id="modalButton" type="button" onClick={this.handleClick}> X </button>
+            <button id="modalButton" type="button" onClick={this.handleClick}> X </button>
           </div>
         </header>
+        {/* OVERALL SCORE */}
         <div id="modalOverview">
           <span id="modalStar">★</span>{this.props.overall} <span>({this.props.totalReviews} reviews)</span>
         </div>
+        {/* REVIEWS LIST */}
         <table id="modalTable">
           <tbody>
             {this.props.reviews.map(review => (
