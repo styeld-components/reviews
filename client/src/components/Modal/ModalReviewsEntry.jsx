@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 
-class ReviewsEntry extends React.Component {
+class ModalReviewsEntry extends React.Component {
   constructor(props) {
     super(props);
 
@@ -34,4 +34,4 @@ class ReviewsEntry extends React.Component {
   }
 }
 
-export default ReviewsEntry;
+export default ModalReviewsEntry;
