@@ -1,7 +1,16 @@
 const Review = require('../database/reviews.js');
 
-// GET ALL REVIEW DATA
-const reviews = function (req, res) {
+// GET REVIEW DATA
+const reviewsMain = function (req, res) {
+  const room = req.params.roomId;
+  Review.find({ _roomId: room }).sort({ date: -1 }).exec((err, data) => {
+    if (err) res.sendStatus(400);
+    res.send(data);
+  });
+};
+
+// GET ALL REVIEW DATA FOR MODAL
+const reviewsAll = function (req, res) {
   const room = req.params.roomId;
   Review.find({ _roomId: room }).sort({ date: -1 }).exec((err, data) => {
     if (err) res.sendStatus(400);
@@ -84,4 +93,4 @@ const reviewOverall = function (req, res) {
     });
 };
 
-module.exports = { reviews, reviewScores, reviewOverall };
+module.exports = { reviewsMain, reviewScores, reviewOverall };

@@ -9,7 +9,7 @@ const port = 3002;
 app.use('/', express.static(path.join(__dirname, '../client/dist')));
 app.use(bodyParser.json());
 
-app.get('/api/:roomId/reviews', controller.reviews);
+app.get('/api/:roomId/reviews/main', controller.reviewsMain);
 app.get('/api/:roomId/reviews/scores', controller.reviewScores);
 app.get('/api/:roomId/reviews/overall', controller.reviewOverall);
 
