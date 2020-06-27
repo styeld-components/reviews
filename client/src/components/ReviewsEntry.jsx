@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+import styles from '../styles/style.css';
 
 class ReviewsEntry extends React.Component {
   constructor(props) {
@@ -14,15 +15,15 @@ class ReviewsEntry extends React.Component {
 
   render() {
     return (
-      <tr className="reviewCell">
+      <tr className={styles.reviewCell}>
         <td>
           <div>
-            <img className="userImage" src={this.props.review.user_image} onClick={this.handleClick}></img>
+            <img className={styles.userImage} src={this.props.review.user_image} onClick={this.handleClick}></img>
           </div>
-          <div className="reviewUser">
+          <div className={styles.reviewUser}>
             {this.props.review.user_name}
           </div>
-          <div className="reviewDate">
+          <div className={styles.reviewDate}>
             {moment(this.props.review.date).format('MMMM YYYY')}
           </div>
           <p>
