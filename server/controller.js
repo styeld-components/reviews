@@ -3,19 +3,28 @@ const Review = require('../database/reviews.js');
 // GET REVIEW DATA
 const reviewsMain = function (req, res) {
   const room = req.params.roomId;
-  Review.find({ _roomId: room }).sort({ date: -1 }).exec((err, data) => {
-    if (err) res.sendStatus(400);
-    res.send(data);
-  });
+  Review.find({ _roomId: room }).sort({ date: -1 })
+    .exec((err, data) => {
+      if (err) res.sendStatus(400);
+      res.send(data);
+    });
 };
 
 // GET ALL REVIEW DATA FOR MODAL
 const reviewsAll = function (req, res) {
   const room = req.params.roomId;
-  Review.find({ _roomId: room }).sort({ date: -1 }).exec((err, data) => {
-    if (err) res.sendStatus(400);
-    res.send(data);
-  });
+  const limit = Number(req.query.limit);
+  const page = Number(req.query.page);
+
+  const startIndex = (page - 1) * limit;
+  const endIndex = page * limit;
+
+  Review.find({ _roomId: room }).sort({ date: -1 })
+    .exec((err, data) => {
+      if (err) res.sendStatus(400);
+      console.log(req.query);
+      res.send(data.slice(startIndex, endIndex));
+    });
 };
 
 // COMBINE REVIEW SCORES BASED ON ROOM ID
@@ -93,4 +102,9 @@ const reviewOverall = function (req, res) {
     });
 };
 
-module.exports = { reviewsMain, reviewScores, reviewOverall };
+module.exports = {
+  reviewsMain,
+  reviewsAll,
+  reviewScores,
+  reviewOverall
+};

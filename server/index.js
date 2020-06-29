@@ -6,11 +6,12 @@ const controller = require('./controller.js');
 const app = express();
 const port = 3002;
 
-app.use('/', express.static(path.join(__dirname, '../client/dist')));
+app.use('/:roomId', express.static(path.join(__dirname, '../client/dist')));
 app.use(bodyParser.json());
 
-app.get('/api/:roomId/reviews/main', controller.reviewsMain);
-app.get('/api/:roomId/reviews/scores', controller.reviewScores);
-app.get('/api/:roomId/reviews/overall', controller.reviewOverall);
+app.get('/:roomId/reviews/main', controller.reviewsMain);
+app.get('/:roomId/reviews/all', controller.reviewsAll);
+app.get('/:roomId/reviews/scores', controller.reviewScores);
+app.get('/:roomId/reviews/overall', controller.reviewOverall);
 
-app.listen(port, () => console.log(`Listening at http://localhost:${port}`));
+app.listen(port, () => console.log(`Listening at http://localhost:${port}/`));
