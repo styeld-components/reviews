@@ -1,3 +1,6 @@
+/* eslint-disable react/jsx-one-expression-per-line */
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable max-len */
 import React from 'react';
 import Modal from 'react-modal';
 import $ from 'jquery';
@@ -7,6 +10,10 @@ import Parser from './Parser.js';
 import Reviews from './Reviews.jsx';
 import Scores from './Scores.jsx';
 import ModalReviews from './Modal/ModalReviews.jsx';
+
+const roomNumber = Number((window.location.pathname).slice(1, window.location.pathname.length - 1));
+// const roomNumber = Math.floor(Math.random() * 100 + 1);
+console.log(roomNumber);
 
 Modal.setAppElement('#reviews');
 
@@ -29,17 +36,17 @@ class App extends React.Component {
 
     this.hideReviews = this.hideReviews.bind(this);
     this.showReviews = this.showReviews.bind(this);
+    this.disableScroll = this.disableScroll.bind(this);
+    this.enableScroll = this.enableScroll.bind(this);
   }
 
   componentDidMount() {
-    const testNumber = Math.floor(Math.random() * 100 + 1);
-
-    Parser.getReviews(testNumber, (data) => {
+    Parser.getReviews(roomNumber, (data) => {
       this.setState({
         reviews: data
       });
     });
-    Parser.getReviewScores(testNumber, (data) => {
+    Parser.getReviewScores(roomNumber, (data) => {
       this.setState({
         cleanliness: data[0].total_cleanliness.toFixed(1),
         accuracy: data[0].total_accuracy.toFixed(1),
@@ -49,7 +56,7 @@ class App extends React.Component {
         value: data[0].total_value.toFixed(1)
       });
     });
-    Parser.getReviewOverall(testNumber, (data) => {
+    Parser.getReviewOverall(roomNumber, (data) => {
       this.setState({
         overall: (data[0].total_score).toFixed(2),
         totalReviews: data[0].total_reviews
@@ -69,10 +76,24 @@ class App extends React.Component {
     });
   }
 
+  disableScroll() {
+    document.body.style.overflow = 'hidden';
+  }
+
+  enableScroll() {
+    document.body.style.overflow = 'scroll';
+  }
+
   render() {
     return (
       <div>
-        <Modal className={styles.modalReviews} isOpen={this.state.modal} onRequestClose={this.hideReviews}
+        <Modal
+          className={styles.modalReviews}
+          closeTimeoutMS={500}
+          isOpen={this.state.modal}
+          onRequestClose={this.hideReviews}
+          onAfterOpen={this.disableScroll}
+          onAfterClose={this.enableScroll}
           style={{
             overlay: {
               position: 'fixed',
@@ -96,7 +117,8 @@ class App extends React.Component {
               outline: 'none',
               padding: '20px'
             }
-          }}>
+          }}
+        >
           <ModalReviews
             reviews={this.state.reviews}
             hideModal={this.hideReviews}

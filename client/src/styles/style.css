@@ -35,7 +35,7 @@ body {
   float: right;
   font-size: 12px;
   font-weight: 600;
-  margin-top: 5px;
+  margin-top: 4px;
   margin-right: 64px;
 }
 
@@ -57,7 +57,7 @@ body {
   width: 60px;
   border-radius: 4px;
   background-color: #F7F7F7;
-  margin-top: 13px;
+  margin-top: 10px;
   margin-right: 16px;
 }
 
@@ -93,7 +93,7 @@ body {
 .reviewUser {
   font-size: 14px;
   font-weight: 800;
-  padding-top: 16px;
+  padding-top: 10px;
 }
 
 .reviewDate {
@@ -101,6 +101,7 @@ body {
   font-weight: 300;
   color: #767676;
   padding-bottom: 8px;
+  margin-bottom: 4px;
 
 }
 
@@ -119,8 +120,8 @@ p {
   font-family: "Nunito Sans", Arial, sans-serif;
   font-size: 16px;
   font-weight: 400;
-  padding-top: 19px;
-  padding-bottom: 19px;
+  padding-top: 14px;
+  padding-bottom: 14px;
   padding-right: 28px;
   padding-left: 28px;
   margin-top: 20px;
@@ -135,8 +136,8 @@ p {
 
 .reviewsButton:active {
   font-size: 14px;
-  padding-top: 17px;
-  padding-bottom: 17px;
+  padding-top: 12px;
+  padding-bottom: 12px;
   padding-right: 26px;
   padding-left: 26px;
   margin-top: 23px;
@@ -250,3 +251,25 @@ p {
   padding-top: 12px;
   margin-top: 56px;
 }
+
+/* MODAL INTERACTIONS */
+
+/* .ReactModal__Overlay {
+  opacity: 0;
+  transform: translateX(-100px);
+  transition: all 500ms ease-in-out;
+}
+
+.ReactModal__Overlay--after-open {
+  opacity: 1;
+  transform: translateX(0px);
+}
+
+.ReactModal__Overlay--before-close {
+  opacity: 0;
+  transform: translateX(-100px);
+}
+
+.ReactModal__Body--open {
+  overflow-y: hidden;
+} */

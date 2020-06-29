@@ -1,19 +1,97 @@
-import React from 'react';
+/* eslint-disable max-len */
+import React, { Component, Fragment } from 'react';
+import ReactDOM from 'react-dom';
+import Modal from 'react-modal';
+import InfiniteScroll from 'react-infinite-scroller';
+import axios from 'axios';
+
 import ModalReviewsEntry from './ModalReviewsEntry.jsx';
+import ModalScores from './ModalScores.jsx';
 import styles from '../../styles/style.css';
+import Parser from '../Parser.js';
+
+const roomId = 10;
 
 class ModalReviews extends React.Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      error: false,
+      hasMore: true,
+      isLoading: false,
+      pageNumber: 1,
+      reviews: []
+    };
+
     this.handleClick = this.handleClick.bind(this);
+    this.loadReviews = this.loadReviews.bind(this);
+
+    window.onscroll = () => {
+      const {
+        loadReviews,
+        state: {
+          error,
+          isLoading,
+          hasMore
+        }
+      } = this;
+
+      console.log('ONSCROLL');
+
+      if (error || isLoading || !hasMore) return;
+      if (
+        window.innerHeight + document.documentElement.scrollTop
+        === document.documentElement.offsetHeight
+      ) {
+        loadReviews(this.state.pageNumber);
+      }
+    };
+  }
+
+  componentDidMount() {
+    this.loadReviews(this.state.pageNumber);
   }
 
   handleClick() {
     this.props.hideModal();
   }
 
+  loadReviews(pageNumber) {
+    this.setState({ isLoading: true }, () => {
+      axios({
+        method: 'GET',
+        url: `api/${roomId}/reviews/all?page=${pageNumber}&limit=10`
+      })
+        .then((res) => {
+          const nextReviews = res.data;
+          this.setState({
+            hasMore: (this.state.reviews.length < 100),
+            isLoading: false,
+            pageNumber: this.state.pageNumber + 1,
+            reviews: [
+              ...this.state.reviews,
+              ...nextReviews
+            ]
+          });
+        })
+        .catch((err) => {
+          this.setState({
+            error: true,
+            isLoading: false,
+          });
+        });
+    });
+  }
+
   render() {
+    const loader = <div className="loader">Loading ...</div>;
+    const {
+      error,
+      hasMore,
+      isLoading,
+      reviews,
+    } = this.state;
     return (
       <div>
         {/* CLOSE MODAL BUTTON */}
@@ -27,89 +105,40 @@ class ModalReviews extends React.Component {
           <span className={styles.modalStar}>★</span>{this.props.overall} <span>({this.props.totalReviews} reviews)</span>
         </div>
         {/* REVIEWS LIST */}
-        <table className={styles.modalTable}>
+
+        {/* <table className={styles.modalTable}>
           <tbody>
-            {this.props.reviews.map(review => (
+            {reviews.map((review) => (
               <ModalReviewsEntry review={review} key={review._id} />
             ))}
           </tbody>
-        </table>
-        <table className={styles.modalScores}>
-          <tbody>
-            {/* CLEANLINESS SCORE */}
-            <tr>
-              <td className={styles.modalScoreCell}>
-                Cleanliness
-                <span className={styles.modalScore}>
-                  {this.props.cleanliness}
-                </span>
-                <div className={styles.modalScoreBar}>
-                  <div className={styles.modalScoreRating} style={{ width: JSON.stringify(((Number(this.props.cleanliness)) / 5) * 100) + '%' }} />
-                </div>
-              </td>
-            </tr>
-            {/* ACCURACY SCORE */}
-            <tr>
-              <td className={styles.modalScoreCell}>
-                Accuracy
-                <span className={styles.modalScore}>
-                  {this.props.accuracy}
-                </span>
-                <div className={styles.modalScoreBar}>
-                  <div className={styles.modalScoreRating} style={{ width: JSON.stringify(((Number(this.props.accuracy)) / 5) * 100) + '%' }} />
-                </div>
-              </td>
-            </tr>
-            <tr>
-              {/* COMMUNICATION SCORE */}
-              <td className={styles.modalScoreCell}>
-                Communication
-                <span className={styles.modalScore}>
-                  {this.props.communication}
-                </span>
-                <div className={styles.modalScoreBar}>
-                  <div className={styles.modalScoreRating} style={{ width: JSON.stringify(((Number(this.props.communication)) / 5) * 100) + '%' }} />
-                </div>
-              </td>
-            </tr>
-            {/* LOCATION SCORE */}
-            <tr>
-              <td className={styles.modalScoreCell}>
-                Location
-                <span className={styles.modalScore}>
-                  {this.props.location}
-                </span>
-                <div className={styles.modalScoreBar}>
-                  <div className={styles.modalScoreRating} style={{ width: JSON.stringify(((Number(this.props.location)) / 5) * 100) + '%' }} />
-                </div>
-              </td>
-            </tr>
-            <tr>
-              {/* CHECK-IN SCORE */}
-              <td className={styles.modalScoreCell}>
-                Check-in
-                <span className={styles.modalScore}>
-                  {this.props.checkIn}
-                </span>
-                <div className={styles.modalScoreBar}>
-                  <div className={styles.modalScoreRating} style={{ width: JSON.stringify(((Number(this.props.checkIn)) / 5) * 100) + '%' }} />
-                </div>
-              </td>
-            </tr>
-            {/* VALUE SCORE */}
-            <tr>
-              <td className={styles.modalScoreCell}>
-                Value
-                <span className={styles.modalScore}>
-                  {this.props.value}
-                </span>
-                <div className={styles.modalScoreBar}>
-                  <div className={styles.modalScoreRating} style={{ width: JSON.stringify(((Number(this.props.value)) / 5) * 100) + '%' }} />
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        </table> */}
+
+        <InfiniteScroll
+          pageStart={0}
+          loadMore={this.loadReviews}
+          hasMore={this.state.hasMore}
+          loader={loader}
+        >
+
+          <div>
+            {reviews.map((review) => (
+              <ModalReviewsEntry review={review} key={review._id} />
+            ))}
+          </div>
+        </InfiniteScroll>
+
+        <div>
+          <ModalScores
+            cleanliness={this.props.cleanliness}
+            accuracy={this.props.accuracy}
+            communication={this.props.communication}
+            location={this.props.location}
+            checkIn={this.props.checkIn}
+            value={this.props.value}
+          />
+        </div>
+
       </div>
     );
   }
