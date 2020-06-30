@@ -117,7 +117,7 @@ class App extends React.Component {
           }}
         >
           <ModalReviews
-            reviews={this.state.reviews}
+            // reviews={this.state.reviews}
             hideModal={this.hideReviews}
             overall={this.state.overall}
             totalReviews={this.state.totalReviews}

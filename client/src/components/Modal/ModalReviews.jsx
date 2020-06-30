@@ -46,7 +46,8 @@ class ModalReviews extends React.Component {
 
   handleScroll(e) {
     const elem = e.target;
-    if (elem.scrollHeight - elem.scrollTop <= elem.clientHeight) {
+    console.log(elem.scrollHeight - elem.scrollTop, elem.clientHeight);
+    if (elem.scrollHeight - elem.scrollTop <= elem.clientHeight + 10) {
       Parser.getAllReviews(this.state.pageNumber, (data) => {
         this.setState({
           pageNumber: this.state.pageNumber + 1,
