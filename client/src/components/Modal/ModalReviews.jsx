@@ -22,14 +22,11 @@ class ModalReviews extends React.Component {
   }
 
   componentDidMount() {
-    Parser.getAllReviews(1, (data) => {
-      this.setState({
-        reviews: [...this.state.reviews, ...data]
-      });
-    });
-    Parser.getAllReviews(2, (data) => {
-      this.setState({
-        reviews: [...this.state.reviews, ...data]
+    Parser.getAllReviews(1, (data1) => {
+      Parser.getAllReviews(2, (data2) => {
+        this.setState({
+          reviews: [...this.state.reviews, ...data1, ...data2]
+        });
       });
     });
 
@@ -46,7 +43,8 @@ class ModalReviews extends React.Component {
 
   handleScroll(e) {
     const elem = e.target;
-    if (elem.scrollHeight - elem.scrollTop <= elem.clientHeight) {
+    console.log(elem.scrollHeight - elem.scrollTop, elem.clientHeight);
+    if (elem.scrollHeight - elem.scrollTop <= elem.clientHeight + 10) {
       Parser.getAllReviews(this.state.pageNumber, (data) => {
         this.setState({
           pageNumber: this.state.pageNumber + 1,
