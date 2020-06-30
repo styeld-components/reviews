@@ -1,8 +1,6 @@
 /* eslint-disable max-len */
-import React, { Component, Fragment } from 'react';
-import ReactDOM from 'react-dom';
+import React from 'react';
 import Modal from 'react-modal';
-import InfiniteScroll from 'react-infinite-scroller';
 import axios from 'axios';
 
 import ModalReviewsEntry from './ModalReviewsEntry.jsx';
@@ -10,88 +8,44 @@ import ModalScores from './ModalScores.jsx';
 import styles from '../../styles/style.css';
 import Parser from '../Parser.js';
 
-const roomId = 10;
-
 class ModalReviews extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      error: false,
-      hasMore: true,
-      isLoading: false,
-      pageNumber: 1,
-      reviews: []
+      reviews: this.props.reviews,
+      pageNumber: 2
     };
 
     this.handleClick = this.handleClick.bind(this);
-    this.loadReviews = this.loadReviews.bind(this);
-
-    window.onscroll = () => {
-      const {
-        loadReviews,
-        state: {
-          error,
-          isLoading,
-          hasMore
-        }
-      } = this;
-
-      console.log('ONSCROLL');
-
-      if (error || isLoading || !hasMore) return;
-      if (
-        window.innerHeight + document.documentElement.scrollTop
-        === document.documentElement.offsetHeight
-      ) {
-        loadReviews(this.state.pageNumber);
-      }
-    };
+    this.handleScroll = this.handleScroll.bind(this);
   }
 
   componentDidMount() {
-    this.loadReviews(this.state.pageNumber);
+    document.addEventListener('scroll', this.handleScroll, true);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('scroll', this.handleScroll, true);
   }
 
   handleClick() {
     this.props.hideModal();
   }
 
-  loadReviews(pageNumber) {
-    this.setState({ isLoading: true }, () => {
-      axios({
-        method: 'GET',
-        url: `api/${roomId}/reviews/all?page=${pageNumber}&limit=10`
-      })
-        .then((res) => {
-          const nextReviews = res.data;
-          this.setState({
-            hasMore: (this.state.reviews.length < 100),
-            isLoading: false,
-            pageNumber: this.state.pageNumber + 1,
-            reviews: [
-              ...this.state.reviews,
-              ...nextReviews
-            ]
-          });
-        })
-        .catch((err) => {
-          this.setState({
-            error: true,
-            isLoading: false,
-          });
+  handleScroll(e) {
+    const elem = e.target;
+    if (elem.scrollHeight - elem.scrollTop <= elem.clientHeight) {
+      Parser.getAllReviews(this.state.pageNumber, (data) => {
+        this.setState({
+          pageNumber: this.state.pageNumber + 1,
+          reviews: [...this.state.reviews, ...data]
         });
-    });
+      });
+    }
   }
 
   render() {
-    const loader = <div className="loader">Loading ...</div>;
-    const {
-      error,
-      hasMore,
-      isLoading,
-      reviews,
-    } = this.state;
     return (
       <div>
         {/* CLOSE MODAL BUTTON */}
@@ -106,27 +60,15 @@ class ModalReviews extends React.Component {
         </div>
         {/* REVIEWS LIST */}
 
-        {/* <table className={styles.modalTable}>
-          <tbody>
-            {reviews.map((review) => (
-              <ModalReviewsEntry review={review} key={review._id} />
-            ))}
-          </tbody>
-        </table> */}
-
-        <InfiniteScroll
-          pageStart={0}
-          loadMore={this.loadReviews}
-          hasMore={this.state.hasMore}
-          loader={loader}
-        >
-
-          <div>
-            {reviews.map((review) => (
-              <ModalReviewsEntry review={review} key={review._id} />
-            ))}
-          </div>
-        </InfiniteScroll>
+        <div>
+          <table className={styles.modalTable}>
+            <tbody>
+              {this.state.reviews.map((review) => (
+                <ModalReviewsEntry review={review} key={review._id} />
+              ))}
+            </tbody>
+          </table>
+        </div>
 
         <div>
           <ModalScores
