@@ -10,7 +10,7 @@ import Reviews from './Reviews.jsx';
 import Scores from './Scores.jsx';
 import ModalReviews from './Modal/ModalReviews.jsx';
 
-const roomNumber = Math.floor(Math.random() * 100 + 1); // Number((window.location.pathname).slice(1, window.location.pathname.length - 1));
+const roomId = Math.floor(Math.random() * 100 + 1); // Number((window.location.pathname).slice(1, window.location.pathname.length - 1));
 
 Modal.setAppElement('#reviews');
 
@@ -28,7 +28,8 @@ class App extends React.Component {
       location: 0,
       checkIn: 0,
       value: 0,
-      modal: false
+      modal: false,
+      roomId: roomId
     };
 
     this.hideReviews = this.hideReviews.bind(this);
@@ -38,12 +39,12 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    Parser.getReviews(roomNumber, (data) => {
+    Parser.getReviews(roomId, (data) => {
       this.setState({
         reviews: data
       });
     });
-    Parser.getReviewScores(roomNumber, (data) => {
+    Parser.getReviewScores(roomId, (data) => {
       this.setState({
         cleanliness: data[0].total_cleanliness.toFixed(1),
         accuracy: data[0].total_accuracy.toFixed(1),
@@ -53,7 +54,7 @@ class App extends React.Component {
         value: data[0].total_value.toFixed(1)
       });
     });
-    Parser.getReviewOverall(roomNumber, (data) => {
+    Parser.getReviewOverall(roomId, (data) => {
       this.setState({
         overall: (data[0].total_score).toFixed(2),
         totalReviews: data[0].total_reviews
@@ -117,6 +118,7 @@ class App extends React.Component {
           }}
         >
           <ModalReviews
+            roomId={this.state.roomId}
             hideModal={this.hideReviews}
             overall={this.state.overall}
             totalReviews={this.state.totalReviews}
