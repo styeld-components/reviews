@@ -3,7 +3,6 @@
 /* eslint-disable max-len */
 import React from 'react';
 import Modal from 'react-modal';
-import $ from 'jquery';
 
 import styles from '../styles/style.css';
 import Parser from './Parser.js';
