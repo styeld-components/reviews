@@ -13,8 +13,8 @@ class ModalReviews extends React.Component {
     super(props);
 
     this.state = {
-      reviews: this.props.reviews,
-      pageNumber: 2
+      reviews: [],
+      pageNumber: 3
     };
 
     this.handleClick = this.handleClick.bind(this);
@@ -22,6 +22,17 @@ class ModalReviews extends React.Component {
   }
 
   componentDidMount() {
+    Parser.getAllReviews(1, (data) => {
+      this.setState({
+        reviews: [...this.state.reviews, ...data]
+      });
+    });
+    Parser.getAllReviews(2, (data) => {
+      this.setState({
+        reviews: [...this.state.reviews, ...data]
+      });
+    });
+
     document.addEventListener('scroll', this.handleScroll, true);
   }
 
