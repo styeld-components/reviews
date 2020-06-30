@@ -10,7 +10,7 @@ import Reviews from './Reviews.jsx';
 import Scores from './Scores.jsx';
 import ModalReviews from './Modal/ModalReviews.jsx';
 
-const roomNumber = Number((window.location.pathname).slice(1, window.location.pathname.length - 1));
+const roomNumber = Math.floor(Math.random() * 100 + 1); // Number((window.location.pathname).slice(1, window.location.pathname.length - 1));
 
 Modal.setAppElement('#reviews');
 
@@ -38,12 +38,12 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    Parser.getReviews((data) => {
+    Parser.getReviews(roomNumber, (data) => {
       this.setState({
         reviews: data
       });
     });
-    Parser.getReviewScores((data) => {
+    Parser.getReviewScores(roomNumber, (data) => {
       this.setState({
         cleanliness: data[0].total_cleanliness.toFixed(1),
         accuracy: data[0].total_accuracy.toFixed(1),
@@ -53,7 +53,7 @@ class App extends React.Component {
         value: data[0].total_value.toFixed(1)
       });
     });
-    Parser.getReviewOverall((data) => {
+    Parser.getReviewOverall(roomNumber, (data) => {
       this.setState({
         overall: (data[0].total_score).toFixed(2),
         totalReviews: data[0].total_reviews
