@@ -6,7 +6,7 @@ const reviewsMain = function (req, res) {
   Review.find({ _roomId: room }).sort({ date: -1 })
     .exec((err, data) => {
       if (err) res.sendStatus(400);
-      res.send(data);
+      res.send(data.slice(0, 6));
     });
 };
 

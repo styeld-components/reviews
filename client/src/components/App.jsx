@@ -39,12 +39,12 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    Parser.getReviews(roomNumber, (data) => {
+    Parser.getReviews((data) => {
       this.setState({
         reviews: data
       });
     });
-    Parser.getReviewScores(roomNumber, (data) => {
+    Parser.getReviewScores((data) => {
       this.setState({
         cleanliness: data[0].total_cleanliness.toFixed(1),
         accuracy: data[0].total_accuracy.toFixed(1),
@@ -54,7 +54,7 @@ class App extends React.Component {
         value: data[0].total_value.toFixed(1)
       });
     });
-    Parser.getReviewOverall(roomNumber, (data) => {
+    Parser.getReviewOverall((data) => {
       this.setState({
         overall: (data[0].total_score).toFixed(2),
         totalReviews: data[0].total_reviews

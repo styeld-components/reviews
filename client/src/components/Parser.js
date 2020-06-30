@@ -1,40 +1,36 @@
 import axios from 'axios';
 
-const getReviews = function (roomId, callback) {
-  let url = 'reviews/main';
+const getReviews = function (callback) {
   axios({
     method: 'GET',
-    url: url
+    url: 'reviews/main'
   }).then((res) => {
     callback(res.data);
   });
 };
 
-const getAllReviews = function (roomId, callback) {
-  let url = 'reviews/all';
+const getReviewScores = function (callback) {
   axios({
     method: 'GET',
-    url: url
+    url: 'reviews/scores'
   }).then((res) => {
     callback(res.data);
   });
 };
 
-const getReviewScores = function (roomId, callback) {
-  let url = 'reviews/scores';
+const getReviewOverall = function (callback) {
   axios({
     method: 'GET',
-    url: url
+    url: 'reviews/overall'
   }).then((res) => {
     callback(res.data);
   });
 };
 
-const getReviewOverall = function (roomId, callback) {
-  let url = 'reviews/overall';
+const getAllReviews = function (pageNumber, callback) {
   axios({
     method: 'GET',
-    url: url
+    url: `reviews/all?page=${pageNumber}&limit=10`
   }).then((res) => {
     callback(res.data);
   });
@@ -42,7 +38,7 @@ const getReviewOverall = function (roomId, callback) {
 
 export default {
   getReviews,
-  getAllReviews,
   getReviewScores,
-  getReviewOverall
+  getReviewOverall,
+  getAllReviews
 };

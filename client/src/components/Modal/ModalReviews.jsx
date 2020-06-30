@@ -13,17 +13,15 @@ class ModalReviews extends React.Component {
     super(props);
 
     this.state = {
-      reviews: [],
-      pageNumber: 1
+      reviews: this.props.reviews,
+      pageNumber: 2
     };
 
     this.handleClick = this.handleClick.bind(this);
-    this.loadReviews = this.loadReviews.bind(this);
     this.handleScroll = this.handleScroll.bind(this);
   }
 
   componentDidMount() {
-    this.loadReviews(this.state.pageNumber);
     document.addEventListener('scroll', this.handleScroll, true);
   }
 
@@ -38,24 +36,13 @@ class ModalReviews extends React.Component {
   handleScroll(e) {
     const elem = e.target;
     if (elem.scrollHeight - elem.scrollTop <= elem.clientHeight) {
-      this.loadReviews(this.state.pageNumber);
-    }
-  }
-
-  loadReviews(pageNumber) {
-    axios({
-      method: 'GET',
-      url: `reviews/all?page=${pageNumber}&limit=10`
-    })
-      .then((res) => {
+      Parser.getAllReviews(this.state.pageNumber, (data) => {
         this.setState({
           pageNumber: this.state.pageNumber + 1,
-          reviews: [...this.state.reviews, ...res.data]
+          reviews: [...this.state.reviews, ...data]
         });
-      })
-      .catch((err) => {
-        console.log('does not compute');
       });
+    }
   }
 
   render() {
@@ -77,7 +64,7 @@ class ModalReviews extends React.Component {
           <table className={styles.modalTable}>
             <tbody>
               {this.state.reviews.map((review) => (
-                <ModalReviewsEntry review={review} />
+                <ModalReviewsEntry review={review} key={review._id} />
               ))}
             </tbody>
           </table>
