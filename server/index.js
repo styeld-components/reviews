@@ -1,11 +1,13 @@
 const express = require('express');
 const path = require('path');
+const cors = require('cors');
 const bodyParser = require('body-parser');
 const controller = require('./controller.js');
 
 const app = express();
 const port = 3002;
 
+app.use(cors());
 app.use('/reviews', express.static(path.join(__dirname, '../client/dist')));
 app.use(bodyParser.json());
 
