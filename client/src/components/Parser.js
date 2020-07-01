@@ -3,7 +3,7 @@ import axios from 'axios';
 const getReviews = function (roomId, callback) {
   axios({
     method: 'GET',
-    url: `/reviews/${roomId}/main`
+    url: `http://localhost:3002/reviews/${roomId}/main`
   }).then((res) => {
     callback(res.data);
   });
@@ -12,7 +12,7 @@ const getReviews = function (roomId, callback) {
 const getReviewScores = function (roomId, callback) {
   axios({
     method: 'GET',
-    url: `/reviews/${roomId}/scores`
+    url: `http://localhost:3002/reviews/${roomId}/scores`
   }).then((res) => {
     callback(res.data);
   });
@@ -21,7 +21,7 @@ const getReviewScores = function (roomId, callback) {
 const getReviewOverall = function (roomId, callback) {
   axios({
     method: 'GET',
-    url: `/reviews/${roomId}/overall`
+    url: `http://localhost:3002/reviews/${roomId}/overall`
   }).then((res) => {
     callback(res.data);
   });
@@ -30,7 +30,7 @@ const getReviewOverall = function (roomId, callback) {
 const getAllReviews = function (roomId, pageNumber, callback) {
   axios({
     method: 'GET',
-    url: `/reviews/${roomId}/all?page=${pageNumber}&limit=10`
+    url: `http://localhost:3002/reviews/${roomId}/all?page=${pageNumber}&limit=10`
   }).then((res) => {
     callback(res.data);
   });

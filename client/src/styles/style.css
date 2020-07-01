@@ -1,6 +1,4 @@
 body {
-  font-family: "Nunito Sans", Arial, sans-serif;
-  color: #484848;
   padding-top: 24px;
   padding-left: 84px;
   padding-right: 84px;
@@ -11,6 +9,8 @@ body {
 /* OVERALL TOP BAR */
 
 .overview {
+  font-family: "Nunito Sans", Arial, sans-serif;
+  color: #484848;
   font-size: 22px;
   font-weight: 800;
 }
@@ -25,6 +25,8 @@ body {
 /* SCORES TABLE */
 
 .scoresTable {
+  font-family: "Nunito Sans", Arial, sans-serif;
+  color: #484848;
   font-size: 16px;
   font-weight: 300;
   margin-top: 24px;
@@ -33,6 +35,8 @@ body {
 
 .scoreCell {
   float: right;
+  font-family: "Nunito Sans", Arial, sans-serif;
+  color: #484848;
   font-size: 12px;
   font-weight: 600;
   margin-top: 4px;
@@ -91,12 +95,15 @@ body {
 }
 
 .reviewUser {
+  font-family: "Nunito Sans", Arial, sans-serif;
+  color: #484848;
   font-size: 14px;
   font-weight: 800;
   padding-top: 10px;
 }
 
 .reviewDate {
+  font-family: "Nunito Sans", Arial, sans-serif;
   font-size: 14px;
   font-weight: 300;
   color: #767676;
@@ -106,6 +113,8 @@ body {
 }
 
 p {
+  font-family: "Nunito Sans", Arial, sans-serif;
+  color: #484848;
   font-size: 16px;
   float: left;
   padding-bottom: 24px;
@@ -118,6 +127,7 @@ p {
   border: 1px solid black;
   border-radius: 10px;
   font-family: "Nunito Sans", Arial, sans-serif;
+  color: #484848;
   font-size: 16px;
   font-weight: 400;
   padding-top: 14px;
@@ -135,6 +145,8 @@ p {
 }
 
 .reviewsButton:active {
+  font-family: "Nunito Sans", Arial, sans-serif;
+  color: #484848;
   font-size: 14px;
   padding-top: 12px;
   padding-bottom: 12px;
@@ -165,6 +177,8 @@ p {
 
 .modalBtn {
   background-color: white;
+  font-family: "Nunito Sans", Arial, sans-serif;
+  color: #484848;
   font-size: 28px;
   font-weight: 400;
   border: 0px;
@@ -185,6 +199,8 @@ p {
 /* MODAL OVERVIEW */
 
 .modalOverview {
+  font-family: "Nunito Sans", Arial, sans-serif;
+  color: #484848;
   font-size: 30px;
   font-weight: 800;
   float: left;
@@ -194,6 +210,7 @@ p {
 }
 
 .modalStar {
+  font-family: "Nunito Sans", Arial, sans-serif;
   font-size: 24px;
   font-weight: 800;
   color: #FF5A5F;
@@ -205,6 +222,8 @@ p {
 
 .modalScores {
   width: 310px;
+  font-family: "Nunito Sans", Arial, sans-serif;
+  color: #484848;
   font-size: 14px;
   font-weight: 300;
   padding-left: 12px;
@@ -215,6 +234,8 @@ p {
 
 .modalScore {
   float: right;
+  font-family: "Nunito Sans", Arial, sans-serif;
+  color: #484848;
   font-size: 12px;
   font-weight: 600;
   margin-top: 5px;
@@ -251,25 +272,3 @@ p {
   padding-top: 12px;
   margin-top: 56px;
 }
-
-/* MODAL INTERACTIONS */
-
-/* .ReactModal__Overlay {
-  opacity: 0;
-  transform: translateX(-100px);
-  transition: all 500ms ease-in-out;
-}
-
-.ReactModal__Overlay--after-open {
-  opacity: 1;
-  transform: translateX(0px);
-}
-
-.ReactModal__Overlay--before-close {
-  opacity: 0;
-  transform: translateX(-100px);
-}
-
-.ReactModal__Body--open {
-  overflow-y: hidden;
-} */
