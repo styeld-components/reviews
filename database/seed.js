@@ -28,9 +28,10 @@ const createSampleReviews = function () {
 
 const seedData = createSampleReviews();
 
-const insertSampleReviews = function () {
+const insertSampleReviews = (function () {
   Review.create(seedData)
-    .then(() => db.disconnect());
-};
+    .then(() => console.log('db seeded'))
+    .catch((err) => console.log(err, 'db FAILED to seed'));
+});
 
 insertSampleReviews();

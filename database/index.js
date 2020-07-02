@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
-const mongoDB = 'mongodb://localhost/airbnb';
-mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
+const mongoDB = 'mongodb://database/airbnb';
+mongoose.connect(mongoDB, { useNewUrlParser: true });
 
 const db = mongoose.connection;
 
