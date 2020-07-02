@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node server/index.js",
-    "thundercats-hooo": "nodemon server/index.js",
-    "autobots:roll-out": "node database/seed.js",
+    "dev:start": "nodemon server/index.js",
+    "seed": "node database/seed.js",
     "dev:react": "webpack -d --watch",
     "test": "jest"
   },
