@@ -2,6 +2,7 @@
 import React from 'react';
 import Modal from 'react-modal';
 import axios from 'axios';
+import LazyLoad from 'react-lazyload';
 
 import ModalReviewsEntry from './ModalReviewsEntry.jsx';
 import ModalScores from './ModalScores.jsx';
@@ -72,22 +73,26 @@ class ModalReviews extends React.Component {
         <div>
           <table className={styles.modalTable}>
             <tbody>
-              {this.state.reviews.map((review) => (
-                <ModalReviewsEntry review={review} key={review._id} />
-              ))}
+              <LazyLoad>
+                {this.state.reviews.map((review) => (
+                  <ModalReviewsEntry review={review} key={review._id} />
+                ))}
+              </LazyLoad>
             </tbody>
           </table>
         </div>
 
         <div>
-          <ModalScores
-            cleanliness={this.props.cleanliness}
-            accuracy={this.props.accuracy}
-            communication={this.props.communication}
-            location={this.props.location}
-            checkIn={this.props.checkIn}
-            value={this.props.value}
-          />
+          <LazyLoad>
+            <ModalScores
+              cleanliness={this.props.cleanliness}
+              accuracy={this.props.accuracy}
+              communication={this.props.communication}
+              location={this.props.location}
+              checkIn={this.props.checkIn}
+              value={this.props.value}
+            />
+          </LazyLoad>
         </div>
 
       </div>
