@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+import LazyLoad from 'react-lazyload';
 import styles from '../../styles/style.css';
 
 class ModalReviewsEntry extends React.Component {
@@ -15,6 +16,7 @@ class ModalReviewsEntry extends React.Component {
 
   render() {
     return (
+      <LazyLoad>
       <tr className={styles.reviewCell}>
         <td>
           <div>
@@ -31,6 +33,7 @@ class ModalReviewsEntry extends React.Component {
           </p>
         </td>
       </tr>
+      </LazyLoad>
     );
   }
 }

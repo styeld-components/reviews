@@ -3,6 +3,7 @@
 /* eslint-disable max-len */
 import React from 'react';
 import Modal from 'react-modal';
+import LazyLoad from 'react-lazyload';
 
 import styles from '../styles/style.css';
 import Parser from './Parser.js';
@@ -134,17 +135,21 @@ class App extends React.Component {
           <span className={styles.star}>★</span>{this.state.overall} <span>({this.state.totalReviews} reviews)</span>
         </h3>
         <table className={styles.scoresTable}>
-          <Scores
-            cleanliness={this.state.cleanliness}
-            accuracy={this.state.accuracy}
-            communication={this.state.communication}
-            location={this.state.location}
-            checkIn={this.state.checkIn}
-            value={this.state.value}
-          />
+          <LazyLoad>
+            <Scores
+              cleanliness={this.state.cleanliness}
+              accuracy={this.state.accuracy}
+              communication={this.state.communication}
+              location={this.state.location}
+              checkIn={this.state.checkIn}
+              value={this.state.value}
+            />
+          </LazyLoad>
         </table>
         <table>
-          <Reviews reviews={this.state.reviews} totalReviews={this.state.totalReviews} />
+          <LazyLoad>
+            <Reviews reviews={this.state.reviews} totalReviews={this.state.totalReviews} />
+          </LazyLoad>
         </table>
         <div>
           <button className={styles.reviewsButton} type="button" onClick={this.showReviews}> Show all {this.state.totalReviews} reviews </button>
