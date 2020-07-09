@@ -11,7 +11,7 @@ import Reviews from './Reviews.jsx';
 import Scores from './Scores.jsx';
 import ModalReviews from './Modal/ModalReviews.jsx';
 
-const roomId = Math.floor(Math.random() * 100 + 1); // Number((window.location.pathname).slice(1, window.location.pathname.length - 1));
+const roomId = Math.floor( Math.random() * 100 + 1 ); // Number((window.location.pathname).slice(1, window.location.pathname.length - 1));
 
 Modal.setAppElement('#reviews');
 

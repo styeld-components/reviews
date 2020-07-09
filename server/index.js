@@ -8,6 +8,7 @@ const app = express();
 const port = 3002;
 
 app.use(cors());
+app.use('/', express.static(path.join(__dirname, '../client/dist')));
 app.use('/reviews', express.static(path.join(__dirname, '../client/dist')));
 app.use(bodyParser.json());
 

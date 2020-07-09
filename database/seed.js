@@ -7,6 +7,7 @@ const createSampleReviews = function () {
 
   for (let i = 0; i < 10000; i++) { // EDIT NUMBER OF ENTRIES HERE
     reviews.push({
+      id: i,
       _roomId: faker.random.number({ min: 1, max: 100 }),
       user_name: faker.name.firstName(),
       user_image: faker.image.avatar(),
