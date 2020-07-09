@@ -13,7 +13,7 @@ This component renders a reviews module for a lodging rental app page.
 ## Server API
 
 ### Create review --------------------------------------
-  * POST `/reviews/:roomId`
+  * POST `/:roomId/reviews`
 
 **Success Status Code:** `201`
 
@@ -39,7 +39,7 @@ This component renders a reviews module for a lodging rental app page.
   }
 ```
 ### Read review --------------------------------------
-  * GET `/reviews/:roomId/:id`
+  * GET `/:roomId/reviews/:id`
 
 **Path Parameters:**
   * `roomId` lodging ID
@@ -72,7 +72,7 @@ This component renders a reviews module for a lodging rental app page.
 
 
 ### Update review --------------------------------------
-  * PATCH `/reviews/:roomId/:id`
+  * PATCH `/:roomId/reviews/:id`
 
 **Path Parameters:**
   * `roomId` lodging ID
@@ -99,7 +99,7 @@ This component renders a reviews module for a lodging rental app page.
 ```
 
 ### Delete review --------------------------------------
-  * DELETE `/reviews/:roomId/:id`
+  * DELETE `/:roomId/reviews/:id`
 
 **Path Parameters:**
   * `roomId` lodging ID
