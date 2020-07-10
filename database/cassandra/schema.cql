@@ -7,7 +7,7 @@ CREATE KEYSPACE IF NOT EXISTS sdc
 
 CREATE TABLE rooms (
   id uuid PRIMARY KEY,
-  reviews int,
+  reviews smallint,
   score float,
   cleanliness float,
   communication float,
@@ -19,9 +19,9 @@ CREATE TABLE rooms (
 
 CREATE TABLE reviews_by_room (
   id uuid,
-  roomId uuid,
-  userId uuid,
-  date text,
+  roomId int,
+  userId int,
+  date timestamp,
   body text,
   score tinyint,
   cleanliness tinyint,
@@ -41,9 +41,9 @@ CREATE TABLE users (
 
 CREATE TABLE reviews_by_users (
   id uuid,
-  roomId uuid,
-  userId uuid,
-  date text,
+  roomId int,
+  userId int,
+  date timestamp,
   body text,
   score tinyint,
   cleanliness tinyint,
