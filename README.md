@@ -17,25 +17,24 @@ This component renders a reviews module for a lodging rental app page.
 
 **Success Status Code:** `201`
 
-**Request Body**: Expects JSON with the following keys.
+**Request Body**: Expects JSON with the following keys
 
 ```json
   {
     "id": "Number",
-    "_roomId": "Number",
-    "user_name": "String",
-    "user_image": "String",
-    "user_url": "String",
+    "roomId": "Number",
+    "username": "String",
+    "userImg": "String",
+    "userId": "Number",
     "date": "Date",
-    "text": "String",
-    "scores": {
-      "cleanliness": "Number",
-      "communication": "Number",
-      "check_in": "Number",
-      "accuracy": "Number",
-      "location": "Number",
-      "value": "Number"
-    }
+    "body": "String",
+    "score": "Number",
+    "cleanliness": "Number",
+    "communication": "Number",
+    "checkIn": "Number",
+    "accuracy": "Number",
+    "location": "Number",
+    "value": "Number"
   }
 ```
 ### Read review --------------------------------------
@@ -52,20 +51,19 @@ This component renders a reviews module for a lodging rental app page.
 ```json
   {
     "id": "Number",
-    "_roomId": "Number",
-    "user_name": "String",
-    "user_image": "String",
-    "user_url": "String",
+    "roomId": "Number",
+    "username": "String",
+    "userImg": "String",
+    "userId": "Number",
     "date": "Date",
-    "text": "String",
-    "scores": {
-      "cleanliness": "Number",
-      "communication": "Number",
-      "check_in": "Number",
-      "accuracy": "Number",
-      "location": "Number",
-      "value": "Number"
-    }
+    "body": "String",
+    "score": "Number",
+    "cleanliness": "Number",
+    "communication": "Number",
+    "checkIn": "Number",
+    "accuracy": "Number",
+    "location": "Number",
+    "value": "Number"
   }
 ```
 
@@ -84,17 +82,16 @@ This component renders a reviews module for a lodging rental app page.
 
 ```json
   {
-    "_roomId": "Number",
+    "roomId": "Number",
     "date": "Date",
-    "text": "String",
-    "scores": {
-      "cleanliness": "Number",
-      "communication": "Number",
-      "check_in": "Number",
-      "accuracy": "Number",
-      "location": "Number",
-      "value": "Number"
-    }
+    "body": "String",
+    "score": "Number",
+    "cleanliness": "Number",
+    "communication": "Number",
+    "checkIn": "Number",
+    "accuracy": "Number",
+    "location": "Number",
+    "value": "Number"
   }
 ```
 
