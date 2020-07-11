@@ -3,7 +3,7 @@ CREATE DATABASE sdc;
 USE sdc;
 
 CREATE TABLE rooms (
-  id SERIAL PRIMARY KEY,
+  id INT PRIMARY KEY,
   reviews SMALLINT NOT NULL,
   score FLOAT NOT NULL,
   cleanliness FLOAT,
@@ -15,13 +15,13 @@ CREATE TABLE rooms (
 );
 
 CREATE TABLE users (
-  id SERIAL PRIMARY KEY,
+  id INT PRIMARY KEY,
   username VARCHAR(30) NOT NULL,
   imgUrl VARCHAR(150)
 );
 
 CREATE TABLE reviews (
-  id SERIAL PRIMARY KEY,
+  id INT PRIMARY KEY,
   roomId INT NOT NULL,
   userId INT NOT NULL,
   date DATE NOT NULL,

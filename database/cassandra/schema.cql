@@ -3,10 +3,10 @@ CREATE KEYSPACE IF NOT EXISTS sdc
     'class' : 'SimpleStrategy',
     'replication_factor' : 1
   };
-// USE sdc;
+  USE sdc;
 
 CREATE TABLE rooms (
-  id uuid PRIMARY KEY,
+  id int PRIMARY KEY,
   reviews smallint,
   score float,
   cleanliness float,
@@ -18,7 +18,7 @@ CREATE TABLE rooms (
 );
 
 CREATE TABLE reviews_by_room (
-  id uuid,
+  id int,
   roomId int,
   userId int,
   date timestamp,
@@ -34,13 +34,13 @@ CREATE TABLE reviews_by_room (
 );
 
 CREATE TABLE users (
-  id uuid PRIMARY KEY;
+  id int PRIMARY KEY;
   username varchar(30),
   imgUrl varchar(60)
 );
 
 CREATE TABLE reviews_by_users (
-  id uuid,
+  id int,
   roomId int,
   userId int,
   date timestamp,
