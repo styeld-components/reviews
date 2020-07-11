@@ -37,7 +37,7 @@ This component renders a reviews module for a lodging rental app page.
     "value": "Number"
   }
 ```
-### Read review --------------------------------------
+### Read single review --------------------------------------
   * GET `/:roomId/reviews/:id`
 
 **Path Parameters:**

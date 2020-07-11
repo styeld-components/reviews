@@ -4,8 +4,8 @@ USE sdc;
 
 CREATE TABLE rooms (
   id SERIAL PRIMARY KEY,
-  reviews SMALLINT,
-  score FLOAT,
+  reviews SMALLINT NOT NULL,
+  score FLOAT NOT NULL,
   cleanliness FLOAT,
   communication FLOAT,
   checkIn FLOAT,
@@ -16,23 +16,23 @@ CREATE TABLE rooms (
 
 CREATE TABLE users (
   id SERIAL PRIMARY KEY,
-  username VARCHAR(30),
+  username VARCHAR(30) NOT NULL,
   imgUrl VARCHAR(150)
 );
 
 CREATE TABLE reviews (
   id SERIAL PRIMARY KEY,
-  roomId INT,
-  userId INT,
-  date DATE,
-  body VARCHAR(1000),
-  score TINYINT,
+  roomId INT NOT NULL,
+  userId INT NOT NULL,
+  date DATE NOT NULL,
+  body VARCHAR(1000) NOT NULL,
+  score TINYINT NOT NULL,
   cleanliness TINYINT,
   communication TINYINT,
   checkIn TINYINT,
   accuracy TINYINT,
   location TINYINT,
   value TINYINT,
-  FOREIGN KEY (roomId) REFERENCES rooms (id),
-  FOREIGN KEY (userId) REFERENCES rooms (id)
+  roomId REFERENCES rooms (id),
+  userId REFERENCES users (id)
 );

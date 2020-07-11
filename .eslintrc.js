@@ -19,11 +19,15 @@ module.exports = {
         "react"
     ],
     "rules": {
-        "comma-dangle": 0,
-        "func-names": 0,
-        "import/extensions": 0,
         "no-console": 0,
+        "comma-dangle": 0,
+        "array-bracket-spacing": 0,
+        "arrow-parens": 0,
+        "space-in-parens": 0,
+        "no-unused-expressions": 0,
         "no-plusplus": 0,
-        "no-unused-vars": 0
+        "react/jsx-curly-spacing": 0,
+        "react/jsx-wrap-multilines": 0,
+        "no-confusing-arrow": 0
     }
 };
