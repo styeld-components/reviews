@@ -1,1 +1,2 @@
-- use drain instead of `node --max-old-space-size=`` for seeding? see seedData.js
+- use drain instead of `node --max-old-space-size=`` for seeding? see bottom comments on seedData.js
+- fix postgres seeding script to be more realistic, e.g. Rooms data uses actual avg from other tables

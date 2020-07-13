@@ -23,3 +23,6 @@ coverage
 # Compiled Dirs (http://nodejs.org/api/addons.html)
 build/
 
+# CSV data files
+/database/postgres/csv
+/database/cassandra/csv

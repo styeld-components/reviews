@@ -2,27 +2,26 @@ const fs = require('fs');
 const csvWriter = require('csv-write-stream');
 
 // break your 10M entries into 4-5 csv files
-const numberOfRooms = 10000000; // need 10 mil total, 1k unique
+const numberOfRooms = 5000; // need 10 mil total, 1k unique
 const numberOfUsers = 1000;
 const numberOfReviews = 1000;
 
-/* ROOMS ---------------------------------------------------------
+/* ROOMS --------------------------------------------------------------------------
 *
 *
 *
-* -------------------------------------------------------------- */
+* ------------------------------------------------------------------------------- */
 
 const getRandNum = max => Math.floor( Math.random() * (max + 1) );
 const getRandScore = () => getRandNum(5);
 
-const generateRooms = () => {
-  const writer = csvWriter();
-  writer.pipe( fs.createWriteStream('./database/postgres/rooms.csv') );
+const oneFifth = numberOfRooms / 5; // 5 rounds to get to 10 mil -> 5 CSV files
 
+const generateRooms = () => {
   const unique = 1000; // only need 1k unique entries
-  const arr = [];
+  const uniqueEntries = [];
   for (let i = 0; i < unique; i++) {
-    arr.push({
+    uniqueEntries.push({
       reviews: getRandNum(30),
       score: getRandScore(),
       cleanliness: getRandScore(),
@@ -34,32 +33,33 @@ const generateRooms = () => {
     });
   }
 
-  const oneHundredth = numberOfRooms / 100;
-  for (let i = 0, count = 0, id = 0; i < numberOfRooms / unique; i++) {
-    for (let j = 0; j < unique; j++, count++, id++) {
-      arr[j].id = id;
-      writer.write( arr[j] );
+  // outer loop just splits data to 5 CSV files, inner 2 loops b/c only need 1k unique
+  for (let k = 0, id = 0; k < numberOfRooms / oneFifth; k++) {
+    const writer = csvWriter();
+    writer.pipe( fs.createWriteStream(`./database/postgres/csv/rooms${k}.csv`) );
 
-      if (count === oneHundredth) {
-        console.log(`${id / oneHundredth}% SEEDED`);
-        count = 0;
+    for (let i = 0; i < oneFifth / unique; i++) {
+      for (let j = 0; j < unique; j++, id++) {
+        uniqueEntries[j].id = id;
+        // uniqueEntries[j].k = k;
+        writer.write( uniqueEntries[j] );
       }
     }
+    writer.end();
   }
-  writer.end();
   console.log('done generating rooms');
 };
 
-/* USERS ---------------------------------------------------------
+/* USERS --------------------------------------------------------------------------
 *
 *
 *
-* -------------------------------------------------------------- */
+* ------------------------------------------------------------------------------- */
 
 const getUsername = () => {
   const usernames = [
-    'Michael', 'Jay', 'Johann', 'Eleen', 'Adrian',
-    'Nathan', 'Eliza', 'Josef', 'Emily', 'Watson'
+    'Michael', 'Jay', 'Johann', 'Eleen',
+    'A', 'B', 'C', 'D', 'E', 'F', 'G'
   ];
   const randIdx = getRandNum(usernames.length - 1);
   return usernames[randIdx];
@@ -76,7 +76,7 @@ const getImg = () => {
 
 const generateUsers = () => {
   const writer = csvWriter();
-  writer.pipe( fs.createWriteStream('./database/postgres/users.csv') );
+  writer.pipe( fs.createWriteStream('./database/postgres/csv/users.csv') );
 
   for (let i = 0; i < numberOfUsers; i++) {
     writer.write({
@@ -89,11 +89,11 @@ const generateUsers = () => {
   console.log('done generating users');
 };
 
-/* REVIEWS -------------------------------------------------------
+/* REVIEWS ------------------------------------------------------------------------
 *
 *
 *
-* -------------------------------------------------------------- */
+* ------------------------------------------------------------------------------- */
 
 const getDate = () => {
   const dates = [ 'test1', 'test2', 'test3' ];
@@ -110,7 +110,7 @@ const getText = () => {
 
 const generateReviews = () => {
   const writer = csvWriter();
-  writer.pipe( fs.createWriteStream('./database/postgres/reviews.csv') );
+  writer.pipe( fs.createWriteStream('./database/postgres/csv/reviews.csv') );
 
   for (let i = 0; i < numberOfReviews; i++) {
     writer.write({
