@@ -2,9 +2,12 @@ const fs = require('fs');
 const csvWriter = require('csv-write-stream');
 
 // break your 10M entries into 4-5 csv files
-const numberOfRooms = 5000; // need 10 mil total, 1k unique
+const numberOfRooms = 1e7; // need 10 mil total, 1k unique
 const numberOfUsers = 1000;
 const numberOfReviews = 1000;
+
+const getRandNum = max => Math.floor( Math.random() * max );
+const getRandScore = () => getRandNum(6); // gets 0 to 5
 
 /* ROOMS --------------------------------------------------------------------------
 *
@@ -12,43 +15,55 @@ const numberOfReviews = 1000;
 *
 * ------------------------------------------------------------------------------- */
 
-const getRandNum = max => Math.floor( Math.random() * (max + 1) );
-const getRandScore = () => getRandNum(5);
 
-const oneFifth = numberOfRooms / 5; // 5 rounds to get to 10 mil -> 5 CSV files
+const writeRooms = fs.createWriteStream('./database/postgres/csv/rooms.csv');
+writeRooms.write(
+  'id,reviews,score,cleanliness,communication,checkIn,accuracy,location,value\n',
+  'utf8'
+);
 
-const generateRooms = () => {
+const generateRooms = (writer, encoding, callback) => {
   const unique = 1000; // only need 1k unique entries
   const uniqueEntries = [];
   for (let i = 0; i < unique; i++) {
-    uniqueEntries.push({
-      reviews: getRandNum(30),
-      score: getRandScore(),
-      cleanliness: getRandScore(),
-      communication: getRandScore(),
-      checkIn: getRandScore(),
-      accuracy: getRandScore(),
-      location: getRandScore(),
-      value: getRandScore()
-    });
+    uniqueEntries.push([
+      getRandNum(30),
+      getRandScore(),
+      getRandScore(),
+      getRandScore(),
+      getRandScore(),
+      getRandScore(),
+      getRandScore(),
+      getRandScore()
+    ]);
   }
 
-  // outer loop just splits data to 5 CSV files, inner 2 loops b/c only need 1k unique
-  for (let k = 0, id = 0; k < numberOfRooms / oneFifth; k++) {
-    const writer = csvWriter();
-    writer.pipe( fs.createWriteStream(`./database/postgres/csv/rooms${k}.csv`) );
+  let i = numberOfRooms;
+  let j = unique - 1; // handles uniqueEntries
+  let id = 0;
 
-    for (let i = 0; i < oneFifth / unique; i++) {
-      for (let j = 0; j < unique; j++, id++) {
-        uniqueEntries[j].id = id;
-        // uniqueEntries[j].k = k;
-        writer.write( uniqueEntries[j] );
-      }
-    }
-    writer.end();
-  }
-  console.log('done generating rooms');
+  const write = () => {
+    let ok = true;
+    do {
+      j ? j-- : j = unique - 1; // keep repeating from uniqueEntries
+      const data = `${id},` + uniqueEntries[j].join(',') + '\n';
+
+      i--;
+      id++;
+
+      if (i === 0) writer.write(data, encoding, callback);
+      else ok = writer.write(data, encoding);
+    } while (i > 0 && ok);
+
+    if (i > 0) writer.once('drain', write);
+  };
+  write();
 };
+
+generateRooms(writeRooms, 'utf-8', () => {
+  writeRooms.end();
+  console.log('done generating rooms');
+});
 
 /* USERS --------------------------------------------------------------------------
 *
@@ -58,10 +73,10 @@ const generateRooms = () => {
 
 const getUsername = () => {
   const usernames = [
-    'Michael', 'Jay', 'Johann', 'Eleen',
-    'A', 'B', 'C', 'D', 'E', 'F', 'G'
+    'Michael', 'Jay', 'Johann', 'Eleen', 'Ben', 'Kyle', 'Barry',
+    'Clark', 'Bruce', 'Dianna', 'Jonn', 'Wally', 'Arthur'
   ];
-  const randIdx = getRandNum(usernames.length - 1);
+  const randIdx = getRandNum(usernames.length);
   return usernames[randIdx];
 };
 
@@ -70,7 +85,7 @@ const getImg = () => {
   const numPhotos = 8; // number of photos I have in S3
   for (let i = 1; i <= numPhotos; i++)
     urls.push(`https://sdc-reviews-styels.s3-us-west-1.amazonaws.com/${i}.jpeg`);
-  const randIdx = getRandNum(urls.length - 1);
+  const randIdx = getRandNum(urls.length);
   return urls[randIdx];
 };
 
@@ -97,14 +112,14 @@ const generateUsers = () => {
 
 const getDate = () => {
   const dates = [ 'test1', 'test2', 'test3' ];
-  const randIdx = getRandNum(dates.length - 1);
+  const randIdx = getRandNum(dates.length);
   return dates[randIdx];
 };
 
 const getText = () => {
   const text = 'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.';
   const arr = text.split(' ');
-  const randIdx = getRandNum(arr.length);
+  const randIdx = getRandNum(arr.length) + 1;
   return arr.slice(0, randIdx).join(' ');
 };
 
@@ -132,7 +147,7 @@ const generateReviews = () => {
   console.log('done generating reviews');
 };
 
-generateRooms();
+// generateRooms();
 generateUsers();
 generateReviews();
 
@@ -168,3 +183,40 @@ generateReviews();
 //   }
 //   write();
 // }
+
+// OLD ROOMS DATA GEN
+
+// const oneFifth = numberOfRooms / 5; // 5 rounds to get to 10 mil -> 5 CSV files
+
+// const generateRooms = () => {
+//   const unique = 1000; // only need 1k unique entries
+//   const uniqueEntries = [];
+//   for (let i = 0; i < unique; i++) {
+//     uniqueEntries.push({
+//       reviews: getRandNum(30),
+//       score: getRandScore(),
+//       cleanliness: getRandScore(),
+//       communication: getRandScore(),
+//       checkIn: getRandScore(),
+//       accuracy: getRandScore(),
+//       location: getRandScore(),
+//       value: getRandScore()
+//     });
+//   }
+
+//   // outer loop just splits data to 5 CSV files, inner 2 loops b/c only need 1k unique
+//   for (let k = 0, id = 0; k < numberOfRooms / oneFifth; k++) {
+//     const writer = csvWriter();
+//     writer.pipe( fs.createWriteStream(`./database/postgres/csv/rooms${k}.csv`) );
+
+//     for (let i = 0; i < oneFifth / unique; i++) {
+//       for (let j = 0; j < unique; j++, id++) {
+//         uniqueEntries[j].id = id;
+//         uniqueEntries[j].k = k;
+//         writer.write( uniqueEntries[j] );
+//       }
+//     }
+//     writer.end();
+//   }
+//   console.log('done generating rooms');
+// };

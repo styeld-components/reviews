@@ -1,6 +1,11 @@
+/* to run this file:
+  psql postgres
+  \i ./desktop/hr/sdc/database/postgres/schema.sql
+*/
+
 DROP DATABASE IF EXISTS sdc;
 CREATE DATABASE sdc;
-USE sdc;
+\connect sdc;
 
 CREATE TABLE rooms (
   id INT PRIMARY KEY,
@@ -24,15 +29,24 @@ CREATE TABLE reviews (
   id INT PRIMARY KEY,
   roomId INT NOT NULL,
   userId INT NOT NULL,
-  date DATE NOT NULL,
+  date VARCHAR(30) NOT NULL,
   body VARCHAR(1000) NOT NULL,
-  score TINYINT NOT NULL,
-  cleanliness TINYINT,
-  communication TINYINT,
-  checkIn TINYINT,
-  accuracy TINYINT,
-  location TINYINT,
-  value TINYINT,
-  roomId REFERENCES rooms (id),
-  userId REFERENCES users (id)
+  score SMALLINT NOT NULL,
+  cleanliness SMALLINT,
+  communication SMALLINT,
+  checkIn SMALLINT,
+  accuracy SMALLINT,
+  location SMALLINT,
+  value SMALLINT,
+  FOREIGN KEY (roomId) REFERENCES rooms(id),
+  FOREIGN KEY (userId) REFERENCES users(id)
 );
+
+COPY rooms FROM '/Users/brandon/desktop/hr/sdc/database/postgres/csv/rooms.csv'
+  DELIMITER ',' CSV HEADER;
+COPY users FROM '/Users/brandon/desktop/hr/sdc/database/postgres/csv/users.csv'
+  DELIMITER ',' CSV HEADER;
+COPY reviews FROM '/Users/brandon/desktop/hr/sdc/database/postgres/csv/reviews.csv'
+  DELIMITER ',' CSV HEADER;
+
+\connect postgres;
