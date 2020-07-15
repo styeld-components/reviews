@@ -1,8 +1,11 @@
 const fs = require('fs');
 const csvWriter = require('csv-write-stream');
 
-// break your 10M entries into 4-5 csv files
-const numberOfRooms = 1e7; // need 10 mil total, 1k unique
+const rooms = [];
+const users = [];
+const reviews = [];
+
+const numberOfRooms = 1e4; // need 10 mil total, 1k unique
 const numberOfUsers = 1000;
 const numberOfReviews = 1000;
 
@@ -15,18 +18,16 @@ const getRandScore = () => getRandNum(6); // gets 0 to 5
 *
 * ------------------------------------------------------------------------------- */
 
-
-const writeRooms = fs.createWriteStream('./database/postgres/csv/rooms.csv');
-writeRooms.write(
+const writeRooms = fs.createWriteStream('./database/csv/rooms.csv');
+writeRooms.write( // actual db columns will be alphabetized but doesn't matter
   'id,reviews,score,cleanliness,communication,checkIn,accuracy,location,value\n',
   'utf8'
 );
 
 const generateRooms = (writer, encoding, callback) => {
-  const unique = 1000; // only need 1k unique entries
-  const uniqueEntries = [];
-  for (let i = 0; i < unique; i++) {
-    uniqueEntries.push([
+  const uniqueEntries = 1000; // only need 1k unique entries
+  for (let i = 0; i < uniqueEntries; i++) {
+    rooms.push([
       getRandNum(30),
       getRandScore(),
       getRandScore(),
@@ -39,14 +40,14 @@ const generateRooms = (writer, encoding, callback) => {
   }
 
   let i = numberOfRooms;
-  let j = unique - 1; // handles uniqueEntries
+  let j = uniqueEntries - 1; // handles the 1k unique entries
   let id = 0;
 
   const write = () => {
     let ok = true;
     do {
-      j ? j-- : j = unique - 1; // keep repeating from uniqueEntries
-      const data = `${id},` + uniqueEntries[j].join(',') + '\n';
+      j ? j-- : j = uniqueEntries - 1; // keep repeating from rooms arr
+      const data = `${id},` + rooms[j].join(',') + '\n';
 
       i--;
       id++;
@@ -59,11 +60,6 @@ const generateRooms = (writer, encoding, callback) => {
   };
   write();
 };
-
-generateRooms(writeRooms, 'utf-8', () => {
-  writeRooms.end();
-  console.log('done generating rooms');
-});
 
 /* USERS --------------------------------------------------------------------------
 *
@@ -91,14 +87,16 @@ const getImg = () => {
 
 const generateUsers = () => {
   const writer = csvWriter();
-  writer.pipe( fs.createWriteStream('./database/postgres/csv/users.csv') );
+  writer.pipe( fs.createWriteStream('./database/csv/users.csv') );
 
   for (let i = 0; i < numberOfUsers; i++) {
-    writer.write({
+    const user = {
       id: i,
       username: getUsername(),
       imgUrl: getImg()
-    });
+    };
+    users.push(user);
+    writer.write(user);
   }
   writer.end();
   console.log('done generating users');
@@ -110,11 +108,8 @@ const generateUsers = () => {
 *
 * ------------------------------------------------------------------------------- */
 
-const getDate = () => {
-  const dates = [ 'test1', 'test2', 'test3' ];
-  const randIdx = getRandNum(dates.length);
-  return dates[randIdx];
-};
+const getDate = () => `20${getRandNum(2)}${getRandNum(10)}`
+  + `-0${getRandNum(10) || 1}-${getRandNum(3)}${getRandNum(9) || 1}`;
 
 const getText = () => {
   const text = 'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.';
@@ -125,21 +120,21 @@ const getText = () => {
 
 const generateReviews = () => {
   const writer = csvWriter();
-  writer.pipe( fs.createWriteStream('./database/postgres/csv/reviews.csv') );
+  writer.pipe( fs.createWriteStream('./database/csv/reviews.csv') );
 
   for (let i = 0; i < numberOfReviews; i++) {
     writer.write({
-      id: i,
       roomId: getRandNum(numberOfRooms),
-      userId: getRandNum(numberOfUsers),
-      date: getDate(),
+      id: i,
+      accuracy: getRandScore(),
       body: getText(),
-      score: getRandScore(),
+      checkIn: getRandScore(),
       cleanliness: getRandScore(),
       communication: getRandScore(),
-      checkIn: getRandScore(),
-      accuracy: getRandScore(),
+      date: getDate(),
       location: getRandScore(),
+      score: getRandScore(),
+      userId: getRandNum(numberOfUsers),
       value: getRandScore()
     });
   }
@@ -147,44 +142,39 @@ const generateReviews = () => {
   console.log('done generating reviews');
 };
 
-// generateRooms();
+const generateReviews2 = () => { // cass: reviews_by_user needs diff column order
+  const writer = csvWriter();
+  writer.pipe( fs.createWriteStream('./database/csv/reviews2.csv') );
+
+  for (let i = 0; i < numberOfReviews; i++) {
+    writer.write({
+      userId: getRandNum(numberOfUsers),
+      id: i,
+      accuracy: getRandScore(),
+      body: getText(),
+      checkIn: getRandScore(),
+      cleanliness: getRandScore(),
+      communication: getRandScore(),
+      date: getDate(),
+      location: getRandScore(),
+      roomId: getRandNum(numberOfRooms),
+      score: getRandScore(),
+      value: getRandScore()
+    });
+  }
+  writer.end();
+  console.log('done generating reviews2');
+};
+
+generateRooms(writeRooms, 'utf-8', () => {
+  writeRooms.end();
+  console.log('done generating rooms');
+});
 generateUsers();
 generateReviews();
+generateReviews2();
 
-// `node --max-old-space-size=` can crash your computer if you allocate too much.
-// if using node write streams you can check if your write method returns false,
-// run drain event, then restart your func as a callback once mem drain is done
-
-// https://medium.com/@danielburnsart/writing-a-large-amount-of-data-to-a-csv-file-using-nodes-drain-event-99dcaded99b5
-// function writeTenMillionUsers(writer, encoding, callback) {
-//   let i = 10000000;
-//   let id = 0;
-//   function write() {
-//     let ok = true;
-//     do {
-//       i -= 1;
-//       id++;
-//       const username = faker.internet.userName();
-//       const avatar = faker.image.avatar();
-//       const data = `${id},${username},${avatar}\n`;
-//       if (i === 0) {
-//         writer.write(data, encoding, callback);
-//       } else {
-//         // see if we should continue, or wait
-//         // don't pass the callback, because we're not done yet.
-//         ok = writer.write(data, encoding);
-//       }
-//     } while (i > 0 && ok);
-//     if (i > 0) {
-//     // had to stop early!
-//     // write some more once it drains
-//       writer.once('drain', write);
-//     }
-//   }
-//   write();
-// }
-
-// OLD ROOMS DATA GEN
+// old generateRooms -------------------------------------------------------------
 
 // const oneFifth = numberOfRooms / 5; // 5 rounds to get to 10 mil -> 5 CSV files
 
@@ -207,7 +197,7 @@ generateReviews();
 //   // outer loop just splits data to 5 CSV files, inner 2 loops b/c only need 1k unique
 //   for (let k = 0, id = 0; k < numberOfRooms / oneFifth; k++) {
 //     const writer = csvWriter();
-//     writer.pipe( fs.createWriteStream(`./database/postgres/csv/rooms${k}.csv`) );
+//     writer.pipe( fs.createWriteStream(`./database/csv/rooms${k}.csv`) );
 
 //     for (let i = 0; i < oneFifth / unique; i++) {
 //       for (let j = 0; j < unique; j++, id++) {

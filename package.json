@@ -6,9 +6,8 @@
   "scripts": {
     "start": "node server/index.js",
     "nodemon": "nodemon server/index.js",
-    "seedP": "node database/postgres/seedP.js",
-    "seedC": "node database/cassandra/seedC.js",
-    "oldseed": "node database/seed.js",
+    "write": "node database/writeData.js",
+    "oldseed": "node database/oldSeed.js",
     "webpack": "webpack -d --watch",
     "build": "webpack --mode production",
     "test": "jest"
