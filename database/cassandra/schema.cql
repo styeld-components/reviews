@@ -13,11 +13,10 @@ USE sdc;
 
 CREATE TABLE rooms (
   id int PRIMARY KEY,
-  reviews smallint,
   score float,
   cleanliness float,
   communication float,
-  checkIn float,
+  check_in float,
   accuracy float,
   location float,
   value float
@@ -25,47 +24,49 @@ CREATE TABLE rooms (
 
 CREATE TABLE reviews_by_room (
   id int,
-  roomId int,
-  userId int,
-  date timestamp,
+  room_id int,
+  user_id int,
+  date text,
   body text,
   score tinyint,
   cleanliness tinyint,
   communication tinyint,
-  checkIn tinyint,
+  check_in tinyint,
   accuracy tinyint,
   location tinyint,
   value tinyint,
-  PRIMARY KEY (roomId, id)
-);
+  PRIMARY KEY (room_id, date)
+) WITH CLUSTERING ORDER BY (date DESC);
 
 CREATE TABLE users (
   id int PRIMARY KEY,
   username text,
-  imgUrl text
+  img_url text
 );
 
 CREATE TABLE reviews_by_user (
   id int,
-  roomId int,
-  userId int,
-  date timestamp,
+  room_id int,
+  user_id int,
+  date text,
   body text,
   score tinyint,
   cleanliness tinyint,
   communication tinyint,
-  checkIn tinyint,
+  check_in tinyint,
   accuracy tinyint,
   location tinyint,
   value tinyint,
-  PRIMARY KEY (userId, id)
-);
+  PRIMARY KEY (user_id, date)
+) WITH CLUSTERING ORDER BY (date DESC);
 
 COPY rooms FROM '/Users/brandon/desktop/hr/sdc/database/csv/rooms.csv'
   WITH DELIMITER=',' AND HEADER=TRUE;
 COPY users FROM '/Users/brandon/desktop/hr/sdc/database/csv/users.csv'
   WITH DELIMITER=',' AND HEADER=TRUE;
-COPY reviews_by_room FROM '/Users/brandon/desktop/hr/sdc/database/csv/reviews.csv'
+COPY reviews_by_room
+  FROM '/Users/brandon/desktop/hr/sdc/database/csv/reviews.csv'
   WITH DELIMITER=',' AND HEADER=TRUE;
-COPY reviews_by_user FROM '/Users/brandon/desktop/hr/sdc/database/csv/reviews2.csv'
+COPY reviews_by_user
+  FROM '/Users/brandon/desktop/hr/sdc/database/csv/reviews2.csv'
   WITH DELIMITER=',' AND HEADER=TRUE;

@@ -28,6 +28,7 @@ module.exports = {
         "no-plusplus": 0,
         "react/jsx-curly-spacing": 0,
         "react/jsx-wrap-multilines": 0,
+        "prefer-template": 0,
         "no-confusing-arrow": 0
     }
 };

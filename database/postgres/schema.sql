@@ -9,11 +9,10 @@ CREATE DATABASE sdc;
 
 CREATE TABLE rooms (
   id INT PRIMARY KEY,
-  reviews SMALLINT NOT NULL,
   score REAL NOT NULL,
   cleanliness REAL,
   communication REAL,
-  checkIn REAL,
+  check_in REAL,
   accuracy REAL,
   location REAL,
   value REAL
@@ -26,20 +25,20 @@ CREATE TABLE users (
 );
 
 CREATE TABLE reviews (
-  roomId INT NOT NULL,
-  id INT PRIMARY KEY,
+  room_id INT NOT NULL,
+  date DATE NOT NULL,
   accuracy SMALLINT,
   body VARCHAR(1000) NOT NULL,
-  checkIn SMALLINT,
+  check_in SMALLINT,
   cleanliness SMALLINT,
   communication SMALLINT,
-  date DATE NOT NULL,
+  id INT PRIMARY KEY,
   location SMALLINT,
   score SMALLINT NOT NULL,
-  userId INT NOT NULL,
+  user_id INT NOT NULL,
   value SMALLINT,
-  FOREIGN KEY (roomId) REFERENCES rooms(id),
-  FOREIGN KEY (userId) REFERENCES users(id)
+  FOREIGN KEY (room_id) REFERENCES rooms(id),
+  FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
 COPY rooms FROM '/Users/brandon/desktop/hr/sdc/database/csv/rooms.csv'

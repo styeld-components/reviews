@@ -24,5 +24,4 @@ coverage
 build/
 
 # CSV data files
-/database/postgres/csv
-/database/cassandra/csv
+database/csv/
