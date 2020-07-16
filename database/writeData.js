@@ -1,5 +1,4 @@
 const fs = require('fs');
-// const csvWriter = require('csv-write-stream');
 
 const rooms = [];
 const users = [];
@@ -122,21 +121,23 @@ const generateReviews = (writer, encoding, callback) => {
   let i = numberOfReviews;
   let j = uniqueEntries - 1; // handles the 1k unique entries
   let id = 0;
-  const oneFiftieth = numberOfReviews / 50;
-  let count = 0; // count & oneFiftieth are just for logging progress
+  const oneTwentieth = numberOfReviews / 20;
+  let count = 0; // count & oneTwentieth are just for logging progress
 
   const write = () => {
     let ok = true;
     do {
       j > 0 ? j-- : j = uniqueEntries - 1; // keep repeating from reviews arr
       const r = reviews[j];
-      const data = `${r.room_id},${r.date},${r.accuracy},${r.body},${r.check_in},${r.cleanliness},`
-        + `${r.communication},${id},${r.location},${r.score},${r.user_id},${r.value}\n`;
+      const room_id = getRandNum(numberOfRooms);
+      const user_id = getRandNum(numberOfUsers);
+      const data = `${room_id},${r.date},${r.accuracy},${r.body},${r.check_in},${r.cleanliness},`
+        + `${r.communication},${id},${r.location},${r.score},${user_id},${r.value}\n`;
 
       i--;
       id++;
       count++;
-      if (count === oneFiftieth) {
+      if (count === oneTwentieth) {
         console.log(`${id / numberOfReviews * 100}% reviews`);
         count = 0;
       }
@@ -166,21 +167,23 @@ const generateReviews2 = (writer, encoding, callback) => {
   let i = numberOfReviews;
   let j = uniqueEntries - 1; // handles the 1k unique entries
   let id = 0;
-  const oneFiftieth = numberOfReviews / 50;
-  let count = 0; // count & oneFiftieth are just for logging progress
+  const oneTwentieth = numberOfReviews / 20;
+  let count = 0; // count & oneTwentieth are just for logging progress
 
   const write = () => {
     let ok = true;
     do {
       j > 0 ? j-- : j = uniqueEntries - 1; // keep repeating from reviews arr
       const r = reviews[j];
-      const data = `${r.user_id},${r.date},${r.accuracy},${r.body},${r.check_in},${r.cleanliness},`
-        + `${r.communication},${id},${r.location},${r.room_id},${r.score},${r.value}\n`;
+      const user_id = getRandNum(numberOfUsers);
+      const room_id = getRandNum(numberOfRooms);
+      const data = `${user_id},${r.date},${r.accuracy},${r.body},${r.check_in},${r.cleanliness},`
+        + `${r.communication},${id},${r.location},${room_id},${r.score},${r.value}\n`;
 
       i--;
       id++;
       count++;
-      if (count === oneFiftieth) {
+      if (count === oneTwentieth) {
         console.log(`${id / numberOfReviews * 100}% reviews2`);
         count = 0;
       }
