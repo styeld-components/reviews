@@ -1,12 +1,20 @@
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
 
-const mongoDB = 'mongodb://172.17.0.2:27017/airbnb';
-mongoose.connect(
-  // 'mongodb://172.17.0.2:27017/airbnb', // for AWS/Docker deployment
-  'mongodb://localhost/airbnb', // for local
-  { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true }
-);
+// const mongoDB = 'mongodb://172.17.0.2:27017/airbnb';
+// mongoose.connect(
+//   // 'mongodb://172.17.0.2:27017/airbnb', // for AWS/Docker deployment
+//   'mongodb://localhost/airbnb', // for local
+//   { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true }
+// );
 
-const db = mongoose.connection;
+// const db = mongoose.connection;
 
-module.exports = db;
+// module.exports = db;
+
+const { Client } = require('pg');
+
+const client = new Client({ connectionString: 'postgresql://localhost/sdc' });
+
+client.connect(err => err ? console.log(err) : console.log('connected'));
+
+module.exports = client;

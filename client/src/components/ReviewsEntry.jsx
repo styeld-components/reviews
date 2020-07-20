@@ -29,7 +29,7 @@ class ReviewsEntry extends React.Component {
               {moment(this.props.review.date).format('MMMM YYYY')}
             </div>
             <p>
-              {this.props.review.text}
+              {this.props.review.body}
             </p>
           </td>
         </tr>

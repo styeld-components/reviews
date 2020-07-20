@@ -25,3 +25,5 @@ build/
 
 # CSV data files
 database/csv/
+
+/newrelic.js

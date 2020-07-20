@@ -30,7 +30,7 @@ class App extends React.Component {
       checkIn: 0,
       value: 0,
       modal: false,
-      roomId: roomId
+      roomId
     };
 
     this.hideReviews = this.hideReviews.bind(this);

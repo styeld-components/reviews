@@ -7,7 +7,7 @@ const reviews = [];
 const numberOfRooms = 15e5; // 1.5 mil
 const numberOfUsers = 7e4; // 70k
 const maxReviewsPerRoom = 17;
-const numberOfReviews = numberOfRooms * (maxReviewsPerRoom - 5);
+const numberOfReviews = numberOfRooms * (maxReviewsPerRoom - 5); // 18 mil
 
 const getRandNum = max => Math.floor( Math.random() * max );
 const getRandScore = () => getRandNum(6); // gets 0 to 5
