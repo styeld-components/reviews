@@ -11,7 +11,7 @@ import Reviews from './Reviews.jsx';
 import Scores from './Scores.jsx';
 import ModalReviews from './Modal/ModalReviews.jsx';
 
-const roomId = Math.floor( Math.random() * 100 + 1 ); // Number((window.location.pathname).slice(1, window.location.pathname.length - 1));
+const roomId = Math.floor( Math.random() * (1e6 + 1) ); // Number((window.location.pathname).slice(1, window.location.pathname.length - 1));
 
 Modal.setAppElement('#reviews');
 
@@ -40,25 +40,21 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    Parser.getReviews(roomId, (data) => {
+    Parser.getReviews( roomId, data => this.setState({ reviews: data }) );
+    Parser.getReviewScores(roomId, data => {
       this.setState({
-        reviews: data
-      });
-    });
-    Parser.getReviewScores(roomId, (data) => {
-      this.setState({
-        cleanliness: data[0].total_cleanliness.toFixed(1),
-        accuracy: data[0].total_accuracy.toFixed(1),
-        communication: data[0].total_communication.toFixed(1),
-        location: data[0].total_location.toFixed(1),
-        checkIn: data[0].total_check_in.toFixed(1),
-        value: data[0].total_value.toFixed(1)
+        cleanliness: data.total_cleanliness.toFixed(1),
+        accuracy: data.total_accuracy.toFixed(1),
+        communication: data.total_communication.toFixed(1),
+        location: data.total_location.toFixed(1),
+        checkIn: data.total_check_in.toFixed(1),
+        value: data.total_value.toFixed(1)
       });
     });
     Parser.getReviewOverall(roomId, (data) => {
       this.setState({
-        overall: (data[0].total_score).toFixed(2),
-        totalReviews: data[0].total_reviews
+        overall: data.total_score.toFixed(2),
+        totalReviews: data.total_reviews
       });
     });
   }

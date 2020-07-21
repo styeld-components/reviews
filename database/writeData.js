@@ -19,7 +19,10 @@ const getRandScore = () => getRandNum(6); // gets 0 to 5
 
 const usernames = [
   'Michael', 'Jay', 'Johann', 'Eleen', 'Ben', 'Jen', 'Kyle',
-  'Barry', 'Clark', 'Bruce', 'Diana', 'Jonn', 'Wally', 'Arthur'
+  'Barry', 'Clark', 'Bruce', 'Diana', 'Jonn', 'Wally', 'Arthur',
+  'Farel', 'Rick', 'Michael', 'Chris', 'Grant', 'Alan', 'Gene',
+  'Fabio', 'Gabriel', 'Sophie', 'Gabrielle', 'Eleanor', 'Gilbert',
+  'Jamie', 'Alison', 'Cio', 'Tom', 'Frank', 'Brad', 'Warren', 'Bo'
 ];
 const getUsername = () => usernames[getRandNum(usernames.length)];
 

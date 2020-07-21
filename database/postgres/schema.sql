@@ -41,11 +41,20 @@ CREATE TABLE reviews (
   FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
-COPY rooms FROM '/Users/brandon/desktop/hr/sdc/database/csv/rooms.csv'
+-- for local
+-- COPY rooms FROM '/Users/brandon/desktop/hr/sdc/database/csv/rooms.csv'
+--   DELIMITER ',' CSV HEADER;
+-- COPY users FROM '/Users/brandon/desktop/hr/sdc/database/csv/users.csv'
+--   DELIMITER ',' CSV HEADER;
+-- COPY reviews FROM '/Users/brandon/desktop/hr/sdc/database/csv/reviews.csv'
+--   DELIMITER ',' CSV HEADER;
+
+-- for EC2
+COPY rooms FROM '/tmp/rooms.csv'
   DELIMITER ',' CSV HEADER;
-COPY users FROM '/Users/brandon/desktop/hr/sdc/database/csv/users.csv'
+COPY users FROM '/tmp/users.csv'
   DELIMITER ',' CSV HEADER;
-COPY reviews FROM '/Users/brandon/desktop/hr/sdc/database/csv/reviews.csv'
+COPY reviews FROM '/tmp/reviews.csv'
   DELIMITER ',' CSV HEADER;
 
 \connect postgres;

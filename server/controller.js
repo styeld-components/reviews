@@ -3,19 +3,64 @@ const client = require('../database/index.js');
 // GET REVIEW DATA
 const reviewsMain = (req, res) => {
   const room = req.params.roomId;
-  const query = `SELECT * FROM reviews WHERE room_id = ${room} ORDER BY date DESC`;
+  // const query = `SELECT * FROM reviews WHERE room_id = ${room} ORDER BY date DESC`;
+  const query = `SELECT (users.username, users.imgUrl, reviews.id, reviews.date, reviews.body) FROM users INNER JOIN reviews ON users.id = reviews.user_id WHERE reviews.room_id = ${room} ORDER BY reviews.date DESC;`;
 
   client.query(query)
     .then(data => res.send(data.rows))
     .catch(err => console.log('ERR:', err));
-  // client.execute(query, (err, data) => err ? console.log(err) : res.send(data));
+};
 
+// GET ALL REVIEW DATA FOR MODAL
+const reviewsAll = (req, res) => {
+  const room = req.params.roomId;
+  const limit = Number(req.query.limit);
+  const page = Number(req.query.page);
+
+  const startIndex = (page - 1) * limit;
+  const endIndex = page * limit;
+
+  const query = `SELECT (users.username, users.imgUrl, reviews.id, reviews.date, reviews.body) FROM users INNER JOIN reviews ON users.id = reviews.user_id WHERE reviews.room_id = ${room} ORDER BY reviews.date DESC;`;
+
+  client.query(query)
+    .then(data => res.send( data.rows.slice(startIndex, endIndex) ))
+    .catch(err => console.log('ERR:', err));
+};
+
+// // COMBINE REVIEW SCORES BASED ON ROOM ID
+const reviewScores = function (req, res) {
+  const room = req.params.roomId;
+  const query = `SELECT ( AVG(cleanliness), AVG(communication), AVG(check_in), AVG(accuracy), AVG(location), AVG(value) ) FROM reviews WHERE room_id = ${room};`;
+
+  client.query(query)
+    .then(data => res.send( data.rows[0].row.split(',') ))
+    .catch(err => console.log('ERR:', err));
+};
+
+// // GET OVERALL RATING BASED ON AGGREGATE ROOM SCORES
+const reviewOverall = function (req, res) {
+  const room = req.params.roomId;
+  const query = `SELECT ( AVG(cleanliness), AVG(communication), AVG(check_in), AVG(accuracy), AVG(location), AVG(value), count(*) ) FROM reviews WHERE room_id = ${room}`;
+
+  client.query(query)
+    .then(data => res.send( data.rows[0].row.split(',') ))
+    .catch(err => console.log('ERR:', err));
+};
+
+/* OLD STUFF **********************************************************
+ *
+ **********************************************************************
+ *
+ **********************************************************************
+ */
+
+// const reviewsMain = (req, res) => {
   // Review.find({ _roomId: room }).sort({ date: -1 })
   //   .exec((err, data) => {
   //     if (err) res.sendStatus(400);
   //     res.send(data.slice(0, 6));
   //   });
-};
+// };
 
 // GET ALL REVIEW DATA FOR MODAL
 // const reviewsAll = function (req, res) {
@@ -109,8 +154,8 @@ const reviewsMain = (req, res) => {
 // };
 
 module.exports = {
-  reviewsMain
-  // reviewsAll,
-  // reviewScores,
-  // reviewOverall
+  reviewsMain,
+  reviewsAll,
+  reviewScores,
+  reviewOverall
 };

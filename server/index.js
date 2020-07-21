@@ -24,22 +24,9 @@ if (cluster.isMaster) {
   app.use(bodyParser.json());
 
   app.get('/:roomId/reviews/main', controller.reviewsMain);
-  // app.get('/:roomId/reviews/all', controller.reviewsAll);
-  // app.get('/:roomId/reviews/scores', controller.reviewScores);
-  // app.get('/:roomId/reviews/overall', controller.reviewOverall);
-
-  app.get('/:roomId/reviews/all', (req, res) => {
-    // console.log(req);
-    res.send([]);
-  });
-  app.get('/:roomId/reviews/scores', (req, res) => {
-    // console.log(req);
-    res.send([]);
-  });
-  app.get('/:roomId/reviews/overall', (req, res) => {
-    // console.log(req);
-    res.send([]);
-  });
+  app.get('/:roomId/reviews/all', controller.reviewsAll); // for modal
+  app.get('/:roomId/reviews/scores', controller.reviewScores);
+  app.get('/:roomId/reviews/overall', controller.reviewOverall);
 
   app.listen(port, () => console.log(`Listening at http://localhost:${port}/`));
 }

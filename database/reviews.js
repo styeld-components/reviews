@@ -9,7 +9,7 @@ const reviewSchema = new mongoose.Schema({
   user_image: String,
   user_url: String,
   date: Date,
-  text: String,
+  body: String,
   scores: {
     cleanliness: Number,
     communication: Number,

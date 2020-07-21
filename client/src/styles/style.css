@@ -83,6 +83,7 @@ body {
 .userImage {
   border-radius: 50%;
   width: 58px;
+  height: 58px;
   float: left;
 }
 
