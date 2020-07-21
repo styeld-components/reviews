@@ -2,11 +2,13 @@ import http from 'k6/http';
 import { sleep } from 'k6';
 
 export const options = {
-  vus: 10,
-  duration: '30s'
+  stages: [
+    { duration: '1s', target: 50 },
+    { duration: '30s', target: 50 }
+  ]
 };
 
 export default function() {
-  http.get('http://test.k6.io');
+  for (let i = 0; i < 75; i++) http.get('http://localhost:3002');
   sleep(1);
-}k
+}

@@ -4,10 +4,9 @@ const rooms = [];
 const users = [];
 const reviews = [];
 
-const numberOfRooms = 15e5; // 1.5 mil
-const numberOfUsers = 7e4; // 70k
-const maxReviewsPerRoom = 17;
-const numberOfReviews = numberOfRooms * (maxReviewsPerRoom - 5); // 18 mil
+const numberOfRooms = 1e6; // 1 mil
+const numberOfUsers = 2e6;
+const numberOfReviews = 2e7; // 20 mil
 
 const getRandNum = max => Math.floor( Math.random() * max );
 const getRandScore = () => getRandNum(6); // gets 0 to 5
@@ -156,51 +155,52 @@ generateReviews(writeReviews, 'utf-8', () => {
   console.log('done generating reviews');
 });
 
-const writeReviews2 = fs.createWriteStream('./database/csv/reviews2.csv');
-writeReviews2.write( // actual db columns will be alphabetized but doesn't matter
-  'user_id,date,accuracy,body,check_in,cleanliness,communication,id,location,room_id,score,value\n',
-  'utf8'
-);
+// reviews2 functions are for Cassandra (reviews_by_user)
+// const writeReviews2 = fs.createWriteStream('./database/csv/reviews2.csv');
+// writeReviews2.write( // actual db columns will be alphabetized but doesn't matter
+//   'user_id,date,accuracy,body,check_in,cleanliness,communication,id,location,room_id,score,value\n',
+//   'utf8'
+// );
 
-const generateReviews2 = (writer, encoding, callback) => {
-  const uniqueEntries = 1000;
-  let i = numberOfReviews;
-  let j = uniqueEntries - 1; // handles the 1k unique entries
-  let id = 0;
-  const oneTwentieth = numberOfReviews / 20;
-  let count = 0; // count & oneTwentieth are just for logging progress
+// const generateReviews2 = (writer, encoding, callback) => {
+//   const uniqueEntries = 1000;
+//   let i = numberOfReviews;
+//   let j = uniqueEntries - 1; // handles the 1k unique entries
+//   let id = 0;
+//   const oneTwentieth = numberOfReviews / 20;
+//   let count = 0; // count & oneTwentieth are just for logging progress
 
-  const write = () => {
-    let ok = true;
-    do {
-      j > 0 ? j-- : j = uniqueEntries - 1; // keep repeating from reviews arr
-      const r = reviews[j];
-      const user_id = getRandNum(numberOfUsers);
-      const room_id = getRandNum(numberOfRooms);
-      const data = `${user_id},${r.date},${r.accuracy},${r.body},${r.check_in},${r.cleanliness},`
-        + `${r.communication},${id},${r.location},${room_id},${r.score},${r.value}\n`;
+//   const write = () => {
+//     let ok = true;
+//     do {
+//       j > 0 ? j-- : j = uniqueEntries - 1; // keep repeating from reviews arr
+//       const r = reviews[j];
+//       const user_id = getRandNum(numberOfUsers);
+//       const room_id = getRandNum(numberOfRooms);
+//       const data = `${user_id},${r.date},${r.accuracy},${r.body},${r.check_in},${r.cleanliness},`
+//         + `${r.communication},${id},${r.location},${room_id},${r.score},${r.value}\n`;
 
-      i--;
-      id++;
-      count++;
-      if (count === oneTwentieth) {
-        console.log(`${id / numberOfReviews * 100}% reviews2`);
-        count = 0;
-      }
+//       i--;
+//       id++;
+//       count++;
+//       if (count === oneTwentieth) {
+//         console.log(`${id / numberOfReviews * 100}% reviews2`);
+//         count = 0;
+//       }
 
-      if (i === 0) writer.write(data, encoding, callback);
-      else ok = writer.write(data, encoding);
-    } while (i > 0 && ok);
+//       if (i === 0) writer.write(data, encoding, callback);
+//       else ok = writer.write(data, encoding);
+//     } while (i > 0 && ok);
 
-    if (i > 0) writer.once('drain', write);
-  };
-  write();
-};
+//     if (i > 0) writer.once('drain', write);
+//   };
+//   write();
+// };
 
-generateReviews2(writeReviews2, 'utf-8', () => {
-  writeReviews2.end();
-  console.log('done generating reviews2');
-});
+// generateReviews2(writeReviews2, 'utf-8', () => {
+//   writeReviews2.end();
+//   console.log('done generating reviews2');
+// });
 
 /* ROOMS --------------------------------------------------------------------------
 *

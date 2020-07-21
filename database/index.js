@@ -10,10 +10,11 @@
 // const db = mongoose.connection;
 
 // module.exports = db;
-
+const options = require('./config.js');
 const { Client } = require('pg');
 
-const client = new Client({ connectionString: 'postgresql://localhost/sdc' });
+// const client = new Client({ connectionString: 'postgresql://localhost/sdc' });
+const client = new Client(options);
 
 client.connect(err => err ? console.log(err) : console.log('connected'));
 

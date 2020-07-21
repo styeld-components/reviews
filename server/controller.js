@@ -3,7 +3,7 @@ const client = require('../database/index.js');
 // GET REVIEW DATA
 const reviewsMain = (req, res) => {
   const room = req.params.roomId;
-  const query = `SELECT * FROM reviews WHERE room_id = ${room}`;
+  const query = `SELECT * FROM reviews WHERE room_id = ${room} ORDER BY date DESC`;
 
   client.query(query)
     .then(data => res.send(data.rows))

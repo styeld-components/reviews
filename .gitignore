@@ -26,4 +26,6 @@ build/
 # CSV data files
 database/csv/
 
+# sensitive info
 /newrelic.js
+/database/config.js
