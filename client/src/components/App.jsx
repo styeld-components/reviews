@@ -16,6 +16,9 @@ const roomId = Math.floor( Math.random() * (1e6 + 1) ); // Number((window.locati
 Modal.setAppElement('#reviews');
 
 class App extends React.Component {
+  static disableScroll() { document.body.style.overflow = 'hidden'; }
+  static enableScroll() { document.body.style.overflow = 'scroll'; }
+
   constructor(props) {
     super(props);
 
@@ -35,8 +38,6 @@ class App extends React.Component {
 
     this.hideReviews = this.hideReviews.bind(this);
     this.showReviews = this.showReviews.bind(this);
-    this.disableScroll = this.disableScroll.bind(this);
-    this.enableScroll = this.enableScroll.bind(this);
   }
 
   componentDidMount() {
@@ -59,25 +60,8 @@ class App extends React.Component {
     });
   }
 
-  showReviews() {
-    this.setState({
-      modal: true
-    });
-  }
-
-  hideReviews() {
-    this.setState({
-      modal: false
-    });
-  }
-
-  disableScroll() {
-    document.body.style.overflow = 'hidden';
-  }
-
-  enableScroll() {
-    document.body.style.overflow = 'scroll';
-  }
+  showReviews() { this.setState({ modal: true }); }
+  hideReviews() { this.setState({ modal: false }); }
 
   render() {
     return (

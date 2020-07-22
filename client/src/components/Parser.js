@@ -61,7 +61,7 @@ const getReviewOverall = function (roomId, callback) {
     res.data[6] = res.data[6].slice(0, res.data[6].length - 1);
     const arr = [];
 
-    res.data.forEach(elem => arr.push( Number(elem) ) );
+    res.data.forEach( elem => arr.push( Number(elem) ) );
     const sum = arr.slice(0, 6).reduce( (acc, curr) => acc + curr, 0 );
     callback({
       total_score: sum / 6,
