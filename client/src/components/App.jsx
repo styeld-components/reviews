@@ -11,7 +11,10 @@ import Reviews from './Reviews.jsx';
 import Scores from './Scores.jsx';
 import ModalReviews from './Modal/ModalReviews.jsx';
 
-const roomId = Math.floor( Math.random() * (1e6 + 1) ); // Number((window.location.pathname).slice(1, window.location.pathname.length - 1));
+const splitUrl = window.location.href.split('/');
+const roomId = splitUrl[splitUrl.length - 1] || '1';
+console.log(roomId);
+// const roomId = Math.floor( Math.random() * (1e6 + 1) ); // Number((window.location.pathname).slice(1, window.location.pathname.length - 1));
 
 Modal.setAppElement('#reviews');
 

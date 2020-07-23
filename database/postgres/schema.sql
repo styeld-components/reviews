@@ -41,6 +41,9 @@ CREATE TABLE reviews (
   FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
+CREATE INDEX room_id on reviews(room_id);
+CREATE INDEX user_id on reviews(user_id);
+
 -- for local
 -- COPY rooms FROM '/Users/brandon/desktop/hr/sdc/database/csv/rooms.csv'
 --   DELIMITER ',' CSV HEADER;

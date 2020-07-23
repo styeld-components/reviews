@@ -1,8 +1,8 @@
+const newRelic = require('newrelic');
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const newRelic = require('newrelic');
 const cluster = require('cluster');
 const controller = require('./controller.js');
 const numCPUs = require('os').cpus().length;
@@ -20,6 +20,7 @@ if (cluster.isMaster) {
 
   app.use(cors());
   app.use('/', express.static(path.join(__dirname, '../client/dist')));
+  app.use('/:roomId', express.static(path.join(__dirname, '../client/dist')));
   app.use('/reviews', express.static(path.join(__dirname, '../client/dist')));
   app.use(bodyParser.json());
 
