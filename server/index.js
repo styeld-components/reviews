@@ -7,7 +7,7 @@ const cluster = require('cluster');
 const controller = require('./controller.js');
 const numCPUs = require('os').cpus().length;
 
-const port = 3002;
+const port = 3000;
 
 if (cluster.isMaster) {
   for (let i = 0; i < numCPUs; i++) {

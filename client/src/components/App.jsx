@@ -12,7 +12,7 @@ import Scores from './Scores.jsx';
 import ModalReviews from './Modal/ModalReviews.jsx';
 
 const splitUrl = window.location.href.split('/');
-const roomId = splitUrl[splitUrl.length - 1] || '1';
+const roomId = splitUrl[splitUrl.length - 2] || '1';
 console.log(roomId);
 // const roomId = Math.floor( Math.random() * (1e6 + 1) ); // Number((window.location.pathname).slice(1, window.location.pathname.length - 1));
 
